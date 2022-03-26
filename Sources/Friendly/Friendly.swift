@@ -58,6 +58,23 @@ public struct Friendly: View {
                     }
                 }
             }
+        case .notSupport:
+            Text("Change to AirPods Pro")
+                .font(.largeTitle.bold())
+                .padding()
+                .padding(.top)
+
+            ZStack {
+                Circle()
+                    .foregroundColor(.red)
+                    .frame(width: 120)
+
+                Image(systemName: "airpodspro")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 70)
+                    .foregroundColor(.white)
+            }
         case .ignore:
             EmptyView()
         }

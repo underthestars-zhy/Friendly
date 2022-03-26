@@ -28,22 +28,24 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
         motionManager.delegate = self
 
-        if motionManager.isDeviceMotionAvailable {
-            motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
-                guard let self = self, let motion = motion else { return }
-                if self.first {
-                    self.first = false
-                    return
-                }
-
-                self.lastX = self.x
-                self.lastY = self.y
-
-                self.x = motion.attitude.roll
-                self.y = motion.attitude.pitch
+        if !motionManager.isDeviceMotionAvailable {
+            Task {
+                await DeviceState.shared.notSupport()
             }
-        } else {
-            print("Not support")
+        }
+
+        motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
+            guard let self = self, let motion = motion else { return }
+            if self.first {
+                self.first = false
+                return
+            }
+
+            self.lastX = self.x
+            self.lastY = self.y
+
+            self.x = motion.attitude.roll
+            self.y = motion.attitude.pitch
         }
 
         startMonitor()
@@ -52,14 +54,22 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     public func headphoneMotionManagerDidConnect(_ manager: CMHeadphoneMotionManager) {
         first = true
         Task {
-            await DeviceState.shared.connect()
+            if motionManager.isDeviceMotionAvailable {
+                await DeviceState.shared.connect()
+            } else {
+                await DeviceState.shared.notSupport()
+            }
         }
     }
 
     public func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
         first = false
         Task {
-            await DeviceState.shared.disconnect()
+            if motionManager.isDeviceMotionAvailable {
+                await DeviceState.shared.disconnect()
+            } else {
+                await DeviceState.shared.notSupport()
+            }
         }
     }
 

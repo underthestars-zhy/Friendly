@@ -14,6 +14,7 @@ class DeviceState: ObservableObject, Sendable {
         case disconnect
         case ignore
         case prepare
+        case notSupport
     }
 
     static let shared = DeviceState()
@@ -40,6 +41,13 @@ class DeviceState: ObservableObject, Sendable {
         self.state = .ignore
 #if DEBUG
         print("ignore")
+#endif
+    }
+
+    func notSupport() {
+        self.state = .notSupport
+#if DEBUG
+        print("Not support")
 #endif
     }
 }
