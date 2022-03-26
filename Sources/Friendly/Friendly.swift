@@ -1,25 +1,30 @@
 import SwiftUI
 import SwiftUIX
 
-public struct Friendly: View {
+public struct Friendly<Content: View>: View {
     @StateObject var devicesState: DeviceState
     @StateObject var motionManager = MotionManager.shared
 
     @State var breath = false
     @State var prepare = false
 
-    public init() {
+    let content: Content
+
+    public init(_ content: (() -> Content)) {
         _devicesState = StateObject(wrappedValue: DeviceState.shared)
+        self.content = content()
     }
 
     public var body: some View {
         switch devicesState.state {
         case .connect:
-            CursorView()
-                .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
-                .onAppear {
-                    prepare = false
-                }
+            ZStack {
+                CursorView()
+                    .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
+                    .onAppear {
+                        prepare = false
+                    }
+            }
         case .disconnect, .prepare:
             VStack {
                 Text("Please connect AirPods Pro")
