@@ -19,20 +19,24 @@ public struct Friendly<Content: View>: View {
         switch devicesState.state {
         case .connect:
             ZStack {
+                content
+
                 CursorView()
                     .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
                     .onAppear {
                         prepare = false
                     }
             }
+            .edgesIgnoringSafeArea(.all)
         case .disconnect, .prepare:
             VStack {
                 Text("Please connect AirPods Pro")
                     .font(.largeTitle.bold())
                     .padding()
                     .padding(.top)
+                    .padding(.top)
+                    .padding(.top)
                     .opacity(prepare ? 0 : 1)
-
                 ZStack {
                     Circle()
                         .foregroundColor(prepare ? .green : Color.gray.opacity(0.8))
@@ -67,6 +71,8 @@ public struct Friendly<Content: View>: View {
             Text("Change to AirPods Pro")
                 .font(.largeTitle.bold())
                 .padding()
+                .padding(.top)
+                .padding(.top)
                 .padding(.top)
 
             ZStack {

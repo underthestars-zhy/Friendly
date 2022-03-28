@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import SwiftUIX
 
-struct FrinedlyButton<Content: View>: View {
-    @StateObject var devicesState: DeviceState
+public struct FrinedlyButton<Content: View>: View {
+    @StateObject var motionManager = MotionManager.shared
     
     let action: (() -> Void)
     let content: Content
 
+    @State var position: CGRect = .init()
+
     public init(action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
         self.action = action
         self.content = lable()
-
-        _devicesState = StateObject(wrappedValue: DeviceState.shared)
     }
 
     public var body: some View {
@@ -25,6 +26,10 @@ struct FrinedlyButton<Content: View>: View {
             action()
         } label: {
             content
+        }
+        .getPosition($position)
+        .onChange(of: position) { newValue in
+            print(position)
         }
     }
 }

@@ -116,8 +116,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
             offset = 0
         }
 
-        offset *= 2
-        
+        offset = offset.rounded(toPlaces: 4)
 
         return offset
     }
@@ -126,4 +125,3 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         await calculate()
     }
 }
-
