@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreMotion
+import SwiftUIX
 
 public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegate {
     public static let shared = MotionManager()
@@ -40,7 +41,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
                 self.first = false
                 return
             }
-
+ ç
             self.lastX = self.x
             self.lastY = self.y
 
@@ -87,8 +88,8 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     }
 
     @MainActor private func calculate() async {
-        let xOffest = await offsetCalculate(x, last: lastX)
-        let yOffset = await offsetCalculate(y, last: lastY)
+        let xOffest = await offsetCalculate(x, last: lastX, screen: Screen.main.width)
+        let yOffset = await offsetCalculate(y, last: lastY, screen: Screen.main.height)
 
         if center.x + xOffest < 0 {
             center.x = 0
@@ -107,7 +108,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         }
     }
 
-    func offsetCalculate(_ current: Double, last: Double) async -> Double {
+    func offsetCalculate(_ current: Double, last: Double, screen: Double) async -> Double {
         var offset: Double = await DeviceState.shared.state == .connect ? current - last : 0
 
         offset = -offset
@@ -115,6 +116,10 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         if abs(offset) < 0.001 {
             offset = 0
         }
+
+        offset *= 700
+
+        offset = offset / screen
 
         offset = offset.rounded(toPlaces: 4)
 
