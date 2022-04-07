@@ -9,7 +9,7 @@ import SwiftUI
 import CoreMotion
 import SwiftUIX
 
-public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegate {
+class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegate {
     public static let shared = MotionManager()
 
     private var motionManager = CMHeadphoneMotionManager()
@@ -41,7 +41,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
                 self.first = false
                 return
             }
- ç
+
             self.lastX = self.x
             self.lastY = self.y
 
@@ -80,6 +80,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
     private func startMonitor() {
         Task(priority: .high) {
+            try? await Task.sleep(seconds: 1)
             while true {
                 try? await Task.sleep(seconds: 1 / 60)
                 await updateCenter()
@@ -106,6 +107,8 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         } else {
             center.y += yOffset
         }
+
+        CursorState.shared.check()
     }
 
     func offsetCalculate(_ current: Double, last: Double, screen: Double) async -> Double {
@@ -117,7 +120,12 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
             offset = 0
         }
 
-        offset *= 700
+        switch CursorState.shared.state {
+        case .circle:
+            offset *= 700
+        case .react:
+            offset *= 100
+        }
 
         offset = offset / screen
 

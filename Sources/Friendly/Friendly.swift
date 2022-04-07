@@ -4,6 +4,7 @@ import SwiftUIX
 public struct Friendly<Content: View>: View {
     @StateObject var devicesState: DeviceState
     @StateObject var motionManager = MotionManager.shared
+    @StateObject var cursorState = CursorState.shared
 
     @State var breath = false
     @State var prepare = false
@@ -19,13 +20,29 @@ public struct Friendly<Content: View>: View {
         switch devicesState.state {
         case .connect:
             ZStack {
+                EyeTraceView()
+                    .zIndex(-1)
+                    .overlay {
+                        Color(UIColor.systemBackground)
+                    }
+
                 content
 
-                CursorView()
-                    .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
-                    .onAppear {
-                        prepare = false
-                    }
+                switch cursorState.state {
+                case .circle:
+                    CursorView()
+                        .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
+
+                case .react(cgRect: let rect):
+                    RectCursorView(rect: rect)
+                }
+            }
+            .onAppear {
+                prepare = false
+                EyeTraceManager.shared.start()
+            }
+            .onDisappear {
+                EyeTraceManager.shared.stop()
             }
             .edgesIgnoringSafeArea(.all)
         case .disconnect, .prepare:

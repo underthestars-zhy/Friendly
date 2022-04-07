@@ -13,7 +13,8 @@ struct PositionModifier: View {
     var body: some View {
         return GeometryReader { geometry -> Color in
             DispatchQueue.main.async {
-                postion = geometry.frame(in: CoordinateSpace.local)
+                postion = geometry.frame(in: CoordinateSpace.global)
+    
             }
 
             return Color.clear
