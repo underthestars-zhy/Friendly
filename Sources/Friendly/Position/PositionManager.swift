@@ -11,6 +11,8 @@ class PositionManager: ObservableObject {
     static let shared = PositionManager()
 
     var positions = [String : FPosition]()
+    var on: String?
+
     var allIgnore = false
     var exclusion = [String]()
 

@@ -137,4 +137,8 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     @MainActor private func updateCenter() async {
         await calculate()
     }
+
+    func resetCenter() {
+        center = .center
+    }
 }

@@ -19,7 +19,7 @@ public struct FrinedlyButton<Content: View>: View {
 
     let eternalId: String
 
-    public init(_ id: String,action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
+    public init(_ id: String, action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
         self.eternalId = id
         self.action = action
         self.content = lable()
@@ -35,6 +35,13 @@ public struct FrinedlyButton<Content: View>: View {
         .onChange(of: position) { newValue in
             positionManager.updatePosition(eternalId, position: .init(cgRect: position))
         }
-        .onAppear()
+        .onDisappear {
+            FriendlyManager.shared.removeScope(eternalId)
+        }
+        .onRight {
+            if positionManager.on == eternalId {
+                action()
+            }
+        }
     }
 }

@@ -42,7 +42,6 @@ class EyeTraceStorage: ObservableObject {
 
     func percent(_ item: EyeTraceManager.State) -> Bool {
         let all: Double = Double(process.count)
-        print(all)
         let vaild: Double = process.reduce(into: 0.0) { partialResult, state in
             partialResult += state == item ? 1 : 0
         }

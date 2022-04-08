@@ -34,7 +34,10 @@ class CursorState: ObservableObject {
                 }
 
                 self.state = .react(cgRect: position.makeCursorRect())
+                PositionManager.shared.on = eternalId
                 has = true
+
+                break
             }
         }
 

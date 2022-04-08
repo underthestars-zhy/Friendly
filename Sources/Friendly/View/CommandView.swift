@@ -40,7 +40,6 @@ struct CommandView: View {
         }
         .onDisappear {
             PositionManager.shared.allIgnore = false
-            FriendlyManager.shared.removeScope("CommandDefault")
         }
     }
 }
