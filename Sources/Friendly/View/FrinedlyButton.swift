@@ -17,12 +17,12 @@ public struct FrinedlyButton<Content: View>: View {
 
     @State var position: CGRect = .init()
 
-    let eternalId = UUID()
+    let eternalId: String
 
-    public init(action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
+    public init(_ id: String,action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
+        self.eternalId = id
         self.action = action
         self.content = lable()
-        
     }
 
     public var body: some View {

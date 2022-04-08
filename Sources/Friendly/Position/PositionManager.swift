@@ -11,8 +11,18 @@ class PositionManager: ObservableObject {
     static let shared = PositionManager()
 
     var positions = [String : FPosition]()
+    var allIgnore = false
+    var exclusion = [String]()
 
-    func updatePosition(_ id: UUID, position: FPosition) {
-        positions[id.uuidString] = position
+    func updatePosition(_ id: String, position: FPosition) {
+        positions[id] = position
+    }
+
+    func removePosition(_ id: String) {
+        positions.removeValue(forKey: id)
+    }
+
+    func exclusionCheck(_ id: String) -> Bool {
+        exclusion.contains(id)
     }
 }

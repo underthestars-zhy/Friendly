@@ -20,25 +20,26 @@ class CursorState: ObservableObject {
     var t: Task<Void, Never>?
 
     func check() {
-        t?.cancel()
-        t = Task {
-            let positions = PositionManager.shared.positions
+        let positions = PositionManager.shared.positions
 
-            var has = false
+        var has = false
 
-            for group in positions {
-                let position = group.value
-//                let eternalId = group.key
+        for group in positions {
+            let position = group.value
+            let eternalId = group.key
 
-                if position.in() {
-                    self.state = .react(cgRect: position.makeCursorRect())
-                    has = true
+            if position.in() {
+                if PositionManager.shared.allIgnore && !PositionManager.shared.exclusionCheck(eternalId) {
+                    continue
                 }
-            }
 
-            if !has {
-                self.state = .circle
+                self.state = .react(cgRect: position.makeCursorRect())
+                has = true
             }
+        }
+
+        if !has {
+            self.state = .circle
         }
     }
 }

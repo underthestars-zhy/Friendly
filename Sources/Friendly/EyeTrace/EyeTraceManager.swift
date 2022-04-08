@@ -8,13 +8,13 @@
 import SwiftUI
 import ARKit
 
-class EyeTraceManager: NSObject, ARSCNViewDelegate, ObservableObject {
-    static let shared = EyeTraceManager()
+public class EyeTraceManager: NSObject, ARSCNViewDelegate, ObservableObject {
+    public static let shared = EyeTraceManager()
 
     let sceneView: ARSCNView = .init()
     let configuration = ARFaceTrackingConfiguration()
 
-    @Published var eyeState: State = .none
+    @Published public var eyeState: State = .none
 
     override init() {
         super.init()
@@ -36,7 +36,7 @@ class EyeTraceManager: NSObject, ARSCNViewDelegate, ObservableObject {
         sceneView.session.pause()
     }
 
-    enum State {
+    public enum State: String {
         case right
         case left
         case both
@@ -45,7 +45,7 @@ class EyeTraceManager: NSObject, ARSCNViewDelegate, ObservableObject {
 }
 
 extension EyeTraceManager {
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+    public func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let anchor = anchor as? ARFaceAnchor else { return }
         let right = anchor.blendShapes[.eyeBlinkLeft]!.doubleValue < 0.1
         let left = anchor.blendShapes[.eyeBlinkRight]!.doubleValue < 0.1
@@ -60,6 +60,13 @@ extension EyeTraceManager {
             eyeState = .both
         }
 
-        print(eyeState)
+        if EyeTraceStorage.shared.inProcress {
+            EyeTraceStorage.shared.process.append(eyeState)
+            EyeTraceStorage.shared.check()
+        } else if eyeState != .none {
+            EyeTraceStorage.shared.startProcess(eyeState)
+        } else if eyeState == .none {
+            EyeTraceStorage.shared.canSet = true
+        }
     }
 }

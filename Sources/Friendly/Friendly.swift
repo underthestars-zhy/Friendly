@@ -4,7 +4,8 @@ import SwiftUIX
 public struct Friendly<Content: View>: View {
     @StateObject var devicesState: DeviceState
     @StateObject var motionManager = MotionManager.shared
-    @StateObject var cursorState = CursorState.shared
+    @StateObject var cursorState: CursorState
+    @StateObject var eyeTraceStorage = EyeTraceStorage.shared
 
     @State var breath = false
     @State var prepare = false
@@ -13,6 +14,7 @@ public struct Friendly<Content: View>: View {
 
     public init(_ content: (() -> Content)) {
         _devicesState = StateObject(wrappedValue: DeviceState.shared)
+        _cursorState = StateObject(wrappedValue: CursorState.shared)
         self.content = content()
     }
 
@@ -27,6 +29,10 @@ public struct Friendly<Content: View>: View {
                     }
 
                 content
+
+                if eyeTraceStorage.showCommand {
+                    CommandView()
+                }
 
                 switch cursorState.state {
                 case .circle:
