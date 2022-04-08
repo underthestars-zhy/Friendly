@@ -24,6 +24,8 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
 
     @Published var center = UnitPoint.center
 
+    var needWait = false
+
     override init() {
         super.init()
 
@@ -53,7 +55,6 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     }
 
     public func headphoneMotionManagerDidConnect(_ manager: CMHeadphoneMotionManager) {
-        first = true
         Task {
             if motionManager.isDeviceMotionAvailable {
                 await DeviceState.shared.connect()
@@ -64,7 +65,6 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     }
 
     public func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
-        first = false
         Task {
             if motionManager.isDeviceMotionAvailable {
                 await DeviceState.shared.disconnect()
@@ -80,9 +80,12 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
 
     private func startMonitor() {
         Task(priority: .high) {
-            try? await Task.sleep(seconds: 1)
             while true {
                 try? await Task.sleep(seconds: 1 / 60)
+                if needWait {
+                    try? await Task.sleep(seconds: 1.5)
+                    needWait = false
+                }
                 await updateCenter()
             }
         }
@@ -140,5 +143,19 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
 
     func resetCenter() {
         center = .center
+    }
+
+    func reset() {
+        lastX = 0.0
+        lastY = 0.0
+
+        x = 0.0
+        y = 0.0
+
+        first = true
+
+        center = UnitPoint.center
+
+        needWait = true
     }
 }

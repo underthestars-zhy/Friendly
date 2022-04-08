@@ -33,7 +33,14 @@ class CursorState: ObservableObject {
                     continue
                 }
 
-                self.state = .react(cgRect: position.makeCursorRect())
+                if PositionManager.shared.hide.contains(eternalId) && !PositionManager.shared.hideExclusion.contains(eternalId) {
+                    return
+                }
+
+                if PositionManager.shared.buttons.contains(eternalId) {
+                    self.state = .react(cgRect: position.makeCursorRect())
+                }
+
                 PositionManager.shared.on = eternalId
                 has = true
 
@@ -43,6 +50,7 @@ class CursorState: ObservableObject {
 
         if !has {
             self.state = .circle
+            PositionManager.shared.on = nil
         }
     }
 }

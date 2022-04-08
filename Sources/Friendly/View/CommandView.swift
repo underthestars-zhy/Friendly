@@ -11,6 +11,7 @@ import SwiftUIX
 struct CommandView: View {
     @StateObject var storage = Storage.shared
     @StateObject var eyeTraceManger = EyeTraceManager.shared
+    @StateObject var friendlyManager = FriendlyManager.shared
 
     var body: some View {
         HStack {
@@ -29,6 +30,7 @@ struct CommandView: View {
                     }
                 }
                 .exclusion()
+                .hideExclusion(friendlyManager.showPopText)
                 .padding()
             }
         }

@@ -6,6 +6,7 @@ public struct Friendly<Content: View>: View {
     @StateObject var motionManager = MotionManager.shared
     @StateObject var cursorState: CursorState
     @StateObject var eyeTraceStorage = EyeTraceStorage.shared
+    @StateObject var friendlyManager = FriendlyManager.shared
 
     let content: Content
 
@@ -24,6 +25,15 @@ public struct Friendly<Content: View>: View {
                 }
 
             content
+
+            if friendlyManager.showPopText {
+                FriendlyScope {
+                    friendlyManager.showPopText = false
+                    print(friendlyManager.showPopText)
+                }
+
+                FriendlyTextPopView(content: "hi")
+            }
 
             if eyeTraceStorage.showCommand {
                 FriendlyScope {
@@ -50,6 +60,7 @@ public struct Friendly<Content: View>: View {
             switch state {
             case .connect:
                 EyeTraceManager.shared.start()
+                motionManager.reset()
             case .disconnect:
                 EyeTraceManager.shared.stop()
             case .ignore:

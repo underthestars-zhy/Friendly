@@ -12,8 +12,5 @@ public struct FriendlyScope: View {
 
     public var body: some View {
         Color.clear
-            .onRight {
-                onRight()
-            }
     }
 }

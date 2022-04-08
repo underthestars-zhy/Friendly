@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-extension View {
+extension BeFriend where Self: View {
     func onRight(_ action: @escaping () -> ()) -> some View {
         self
-            .modifier(EyeStateModifier(state: .right, action: action))
+            .modifier(EyeStateModifier(state: .right, eternalId: eternalId, action: action))
     }
 }

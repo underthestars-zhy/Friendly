@@ -15,10 +15,15 @@ public struct FriendlyStateButton: View {
     }
 
     public var body: some View {
-        Image(systemName: getImage())
-            .onTapGesture {
-
-            }
+        FriendlyWrappedView("FriendlyStateButton") {
+            Image(systemName: getImage())
+                .onTapGesture {
+                    FriendlyManager.shared.showPopText = true
+                }
+        }
+        .onRight {
+            FriendlyManager.shared.showPopText = true
+        }
     }
 
     func getImage() -> String {

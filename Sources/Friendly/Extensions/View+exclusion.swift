@@ -10,7 +10,6 @@ import SwiftUI
 extension View where Self: BeFriend {
     func exclusion() -> Self {
         PositionManager.shared.exclusion.insert(self.eternalId)
-        print(PositionManager.shared.exclusion)
         return self
     }
 }

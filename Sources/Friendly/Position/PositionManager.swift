@@ -16,6 +16,12 @@ class PositionManager: ObservableObject {
     var allIgnore = false
     var exclusion = Set<String>()
 
+    var buttons = Set<String>()
+
+    var hide = Set<String>()
+
+    var hideExclusion = Set<String>()
+
     func updatePosition(_ id: String, position: FPosition) {
         positions[id] = position
     }

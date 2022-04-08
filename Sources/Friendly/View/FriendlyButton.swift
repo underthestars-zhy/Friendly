@@ -11,11 +11,10 @@ import SwiftUIX
 public struct FriendlyButton<Content: View>: View, BeFriend {
     @StateObject var motionManager = MotionManager.shared
     @StateObject var positionManager = PositionManager.shared
+    @StateObject var friendlyManager = FriendlyManager.shared
     
     let action: (() -> Void)
     let content: Content
-
-    @State var position: CGRect = .init()
 
     let eternalId: String
 
@@ -26,22 +25,24 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
     }
 
     public var body: some View {
-        Button {
-            action()
-        } label: {
-            content
+        FriendlyWrappedView(eternalId) {
+            Button {
+                action()
+            } label: {
+                content
+            }
         }
-        .getPosition($position)
-        .onChange(of: position) { newValue in
-            positionManager.updatePosition(eternalId, position: .init(cgRect: position))
-        }
-        .onDisappear {
-            FriendlyManager.shared.removeScope(eternalId)
-        }
+        .hide(friendlyManager.showPopText)
         .onRight {
             if positionManager.on == eternalId {
                 action()
             }
+        }
+        .onDisappear {
+            FriendlyManager.shared.removeScope(eternalId)
+        }
+        .onAppear {
+            positionManager.buttons.insert(eternalId)
         }
     }
 }
