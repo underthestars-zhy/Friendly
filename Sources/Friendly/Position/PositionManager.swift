@@ -14,7 +14,7 @@ class PositionManager: ObservableObject {
     var on: String?
 
     var allIgnore = false
-    var exclusion = [String]()
+    var exclusion = Set<String>()
 
     func updatePosition(_ id: String, position: FPosition) {
         positions[id] = position

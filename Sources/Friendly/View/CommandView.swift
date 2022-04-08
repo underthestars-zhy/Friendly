@@ -15,7 +15,7 @@ struct CommandView: View {
     var body: some View {
         HStack {
             ForEach(storage.commandGroup?.items ?? []) { commandItem in
-                FriendlyButton("CommandDefault") {
+                FriendlyButton(commandItem.id + "CommandGroupButton") {
                     commandItem.onTap()
                 } lable: {
                     VStack {

@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftUIX
 
-public struct FriendlyButton<Content: View>: View {
+public struct FriendlyButton<Content: View>: View, BeFriend {
     @StateObject var motionManager = MotionManager.shared
     @StateObject var positionManager = PositionManager.shared
     
@@ -20,9 +20,9 @@ public struct FriendlyButton<Content: View>: View {
     let eternalId: String
 
     public init(_ id: String, action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
-        self.eternalId = id
         self.action = action
         self.content = lable()
+        self.eternalId = id
     }
 
     public var body: some View {
