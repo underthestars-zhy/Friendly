@@ -12,5 +12,8 @@ final public class FriendlyManager {
 
     public func removeScope(_ id: String) {
         PositionManager.shared.removePosition(id)
+        if PositionManager.shared.on == id {
+            PositionManager.shared.on = nil
+        }
     }
 }

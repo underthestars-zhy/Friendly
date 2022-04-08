@@ -1,5 +1,5 @@
 //
-//  FrinedlyButton.swift
+//  FriendlyButton.swift
 //  
 //
 //  Created by 朱浩宇 on 2022/3/26.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftUIX
 
-public struct FrinedlyButton<Content: View>: View {
+public struct FriendlyButton<Content: View>: View {
     @StateObject var motionManager = MotionManager.shared
     @StateObject var positionManager = PositionManager.shared
     

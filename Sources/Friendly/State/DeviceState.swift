@@ -13,7 +13,6 @@ class DeviceState: ObservableObject, Sendable {
         case connect
         case disconnect
         case ignore
-        case prepare
         case notSupport
     }
 
@@ -29,8 +28,6 @@ class DeviceState: ObservableObject, Sendable {
     }
 
     func connect() async {
-        self.state = .prepare
-        try? await Task.sleep(seconds: 2)
         self.state = .connect
 #if DEBUG
         print("connect")

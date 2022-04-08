@@ -7,33 +7,32 @@ public struct Friendly<Content: View>: View {
     @StateObject var cursorState: CursorState
     @StateObject var eyeTraceStorage = EyeTraceStorage.shared
 
-    @State var breath = false
-    @State var prepare = false
-
     let content: Content
 
-    public init(_ content: (() -> Content)) {
+    public init(@ViewBuilder _ content: (() -> Content)) {
         _devicesState = StateObject(wrappedValue: DeviceState.shared)
         _cursorState = StateObject(wrappedValue: CursorState.shared)
         self.content = content()
     }
 
     public var body: some View {
-        switch devicesState.state {
-        case .connect:
-            ZStack {
-                EyeTraceView()
-                    .zIndex(-1)
-                    .overlay {
-                        Color(UIColor.systemBackground)
-                    }
-
-                content
-
-                if eyeTraceStorage.showCommand {
-                    CommandView()
+        ZStack {
+            EyeTraceView()
+                .zIndex(-1)
+                .overlay {
+                    Color(UIColor.systemBackground)
                 }
 
+            content
+
+            if eyeTraceStorage.showCommand {
+                FriendlyScope {
+                    eyeTraceStorage.showCommand = false
+                }
+                CommandView()
+            }
+
+            if devicesState.state == .connect {
                 switch cursorState.state {
                 case .circle:
                     CursorView()
@@ -43,74 +42,22 @@ public struct Friendly<Content: View>: View {
                     RectCursorView(rect: rect)
                 }
             }
-            .onAppear {
-                prepare = false
+        }
+        .onDisappear {
+            EyeTraceManager.shared.stop()
+        }
+        .onChange(of: devicesState.state) { state in
+            switch state {
+            case .connect:
                 EyeTraceManager.shared.start()
-            }
-            .onDisappear {
+            case .disconnect:
+                EyeTraceManager.shared.stop()
+            case .ignore:
+                EyeTraceManager.shared.stop()
+            case .notSupport:
                 EyeTraceManager.shared.stop()
             }
-            .edgesIgnoringSafeArea(.all)
-        case .disconnect, .prepare:
-            VStack {
-                Text("Please connect AirPods Pro")
-                    .font(.largeTitle.bold())
-                    .padding()
-                    .padding(.top)
-                    .padding(.top)
-                    .padding(.top)
-                    .opacity(prepare ? 0 : 1)
-                ZStack {
-                    Circle()
-                        .foregroundColor(prepare ? .green : Color.gray.opacity(0.8))
-                        .frame(width: 120)
-                        .scaleEffect(breath ? 2 : 1)
-
-                    Image(systemName: "airpodspro")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 70)
-                        .foregroundColor(.white)
-                }
-                .onChange(of: devicesState.state) {
-                    if $0 == .disconnect {
-                        withAnimation(.easeInOut(duration: 1).repeatForever()) {
-                            breath.toggle()
-                        }
-                    } else if $0 == .prepare {
-                        withAnimation(.easeInOut(duration: 1)) {
-                            breath = false
-                            prepare = true
-                        }
-                    }
-                }
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 1).repeatForever()) {
-                        breath.toggle()
-                    }
-                }
-            }
-        case .notSupport:
-            Text("Change to AirPods Pro")
-                .font(.largeTitle.bold())
-                .padding()
-                .padding(.top)
-                .padding(.top)
-                .padding(.top)
-
-            ZStack {
-                Circle()
-                    .foregroundColor(.red)
-                    .frame(width: 120)
-
-                Image(systemName: "airpodspro")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 70)
-                    .foregroundColor(.white)
-            }
-        case .ignore:
-            EmptyView()
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
