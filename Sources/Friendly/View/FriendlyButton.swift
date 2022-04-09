@@ -32,7 +32,6 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
                 content
             }
         }
-        .hide(friendlyManager.showPopText)
         .onRight {
             if positionManager.on == eternalId {
                 action()

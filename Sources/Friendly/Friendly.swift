@@ -26,15 +26,6 @@ public struct Friendly<Content: View>: View {
 
             content
 
-//            if friendlyManager.showPopText {
-//                FriendlyScope {
-//                    friendlyManager.showPopText = false
-//                    print(friendlyManager.showPopText)
-//                }
-//
-//                FriendlyTextPopView(content: "hi")
-//            }
-
             if eyeTraceStorage.showCommand {
                 FriendlyScope(eternalId: "Show Command") {
                     eyeTraceStorage.showCommand = false

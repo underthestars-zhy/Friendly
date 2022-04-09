@@ -17,6 +17,4 @@ final public class FriendlyManager: ObservableObject {
             PositionManager.shared.on = nil
         }
     }
-
-    @Published var showPopText = false
 }
