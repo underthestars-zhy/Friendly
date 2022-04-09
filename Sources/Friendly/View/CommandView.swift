@@ -12,6 +12,7 @@ struct CommandView: View {
     @StateObject var storage = Storage.shared
     @StateObject var eyeTraceManger = EyeTraceManager.shared
     @StateObject var friendlyManager = FriendlyManager.shared
+    @StateObject var sheetManager = SheetManager.shared
 
     var body: some View {
         HStack {
@@ -30,6 +31,7 @@ struct CommandView: View {
                     }
                 }
                 .exclusion()
+                .hideExclusion(!sheetManager.view.isEmpty)
                 .priority(1)
                 .padding()
             }

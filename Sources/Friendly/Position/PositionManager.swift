@@ -10,6 +10,8 @@ import SwiftUI
 class PositionManager: ObservableObject {
     static let shared = PositionManager()
 
+    @Published var focus: String?
+
     var positions = [String : FPosition]()
     var on: String?
 

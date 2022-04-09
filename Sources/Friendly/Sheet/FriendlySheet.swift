@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct FriendlySheet<Content> where Content: View {
+public struct FriendlySheet<Content> where Content: View {
     let content: Content
 
-    init(@ViewBuilder _ content: () -> Content) {
+    public init(@ViewBuilder _ content: () -> Content) {
         self.content = content()
     }
 
-    func present(_ name: String) {
+    public func present(_ name: String) {
         SheetManager.shared.view.append(.init(view: AnyView(content), name: name))
     }
 }

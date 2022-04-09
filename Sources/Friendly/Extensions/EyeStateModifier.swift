@@ -18,6 +18,7 @@ struct EyeStateModifier: ViewModifier {
             .onChange(of: eyeTraceManager.eyeState) { eye in
                 if eye == state {
                     if PositionManager.shared.on == eternalId {
+                        PositionManager.shared.focus = eternalId
                         action()
                     }
                 }

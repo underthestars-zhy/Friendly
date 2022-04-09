@@ -22,16 +22,29 @@ public struct Friendly<Content: View>: View {
             EyeTraceView()
                 .zIndex(-1)
                 .overlay {
-                    Color(UIColor.systemBackground)
+                    FriendlyWrappedView("Basement") {
+                        Color(UIColor.systemBackground)
+                    }
+                    .priority(Int.min + 1)
+                    .onRight {}
                 }
 
             content
+
+            if !sheetManager.view.isEmpty {
+                FriendlyScope(eternalId: "Sheet Dismiss") {
+                    sheetManager.view.removeLast()
+                }
+                .priority(-1)
+                .hideExclusion(!sheetManager.view.isEmpty)
+            }
 
             VStack {
                 ForEach(sheetManager.view) { item in
                     SheetView(item.name) {
                         item.view
                     }
+                    .hideExclusion(!sheetManager.view.isEmpty)
                     .transition(.scale)
                 }
             }
@@ -41,6 +54,7 @@ public struct Friendly<Content: View>: View {
                     eyeTraceStorage.showCommand = false
                 }
                 .exclusion()
+                .hideExclusion(!sheetManager.view.isEmpty)
 
                 CommandView()
             }

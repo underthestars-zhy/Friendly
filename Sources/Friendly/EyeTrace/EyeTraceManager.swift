@@ -50,6 +50,8 @@ extension EyeTraceManager {
         let right = anchor.blendShapes[.eyeBlinkLeft]!.doubleValue < 0.1
         let left = anchor.blendShapes[.eyeBlinkRight]!.doubleValue < 0.1
 
+        let last = eyeState
+
         if right && left {
             eyeState = .none
         } else if right {
@@ -62,7 +64,9 @@ extension EyeTraceManager {
 
         if EyeTraceStorage.shared.inProcress {
             EyeTraceStorage.shared.process.append(eyeState)
-            EyeTraceStorage.shared.check()
+            if last != eyeState {
+                EyeTraceStorage.shared.check()
+            }
         } else if eyeState != .none {
             EyeTraceStorage.shared.startProcess(eyeState)
         } else if eyeState == .none {
