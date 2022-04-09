@@ -15,7 +15,6 @@ struct FriendlySheet<Content> where Content: View {
     }
 
     func present(_ name: String) {
-        SheetManager.shared.name = name
-        SheetManager.shared.view = AnyView(content)
+        SheetManager.shared.view.append(.init(view: AnyView(content), name: name))
     }
 }

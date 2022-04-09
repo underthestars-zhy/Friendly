@@ -8,10 +8,9 @@
 import SwiftUI
 
 public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
-    @StateObject var positionManager = PositionManager.shared
-    @State var position: CGRect = .init()
+    @StateObject var sheetManager = SheetManager.shared
     
-    let eternalId: String
+    public let eternalId: String
     let content: Content
 
     public init(_ id: String, @ViewBuilder content: () -> Content) {
@@ -22,15 +21,15 @@ public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
     public var body: some View {
         _FriendlyWrappedView(eternalId) {
             content
-                .getPosition($position)
-                .onChange(of: position) { newValue in
-                    positionManager.updatePosition(eternalId, position: .init(cgRect: position))
-                }
         }
+        .hide(!sheetManager.view.isEmpty)
     }
 }
 
 struct _FriendlyWrappedView<Content>: View, BeFriend where Content: View {
+    @StateObject var positionManager = PositionManager.shared
+    @State var position: CGRect = .init()
+
     let eternalId: String
     let content: Content
 
@@ -41,5 +40,12 @@ struct _FriendlyWrappedView<Content>: View, BeFriend where Content: View {
 
     public var body: some View {
         content
+            .getPosition($position)
+            .onChange(of: position) { newValue in
+                positionManager.updatePosition(eternalId, position: .init(cgRect: position))
+            }
+            .onDisappear {
+                FriendlyManager.shared.removeScope(eternalId)
+            }
     }
 }

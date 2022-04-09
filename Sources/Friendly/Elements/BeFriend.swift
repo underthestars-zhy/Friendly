@@ -7,6 +7,6 @@
 
 import SwiftUI
 
-protocol BeFriend {
+public protocol BeFriend {
     var eternalId: String { get }
 }

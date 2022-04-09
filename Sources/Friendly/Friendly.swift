@@ -28,9 +28,9 @@ public struct Friendly<Content: View>: View {
             content
 
             VStack {
-                if let view = sheetManager.view {
-                    SheetView(sheetManager.name) {
-                        view
+                ForEach(sheetManager.view) { item in
+                    SheetView(item.name) {
+                        item.view
                     }
                     .transition(.scale)
                 }

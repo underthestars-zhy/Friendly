@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct FriendlyScope: View, BeFriend {
-    let eternalId: String
+    public let eternalId: String
     let onRight: () -> ()
 
     public var body: some View {

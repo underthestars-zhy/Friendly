@@ -16,7 +16,7 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
     let action: (() -> Void)
     let content: Content
 
-    let eternalId: String
+    public let eternalId: String
 
     public init(_ id: String, action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
         self.action = action
@@ -36,9 +36,6 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
             if positionManager.on == eternalId {
                 action()
             }
-        }
-        .onDisappear {
-            FriendlyManager.shared.removeScope(eternalId)
         }
         .onAppear {
             positionManager.buttons.insert(eternalId)

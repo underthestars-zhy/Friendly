@@ -7,10 +7,10 @@
 
 import Foundation
 
-final public class FriendlyManager: ObservableObject {
-    public static let shared = FriendlyManager()
+final class FriendlyManager: ObservableObject {
+    static let shared = FriendlyManager()
 
-    public func removeScope(_ id: String) {
+    func removeScope(_ id: String) {
         PositionManager.shared.removePosition(id)
         PositionManager.shared.buttons.remove(id)
         if PositionManager.shared.on == id {
