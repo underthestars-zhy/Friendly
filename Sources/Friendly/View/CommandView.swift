@@ -19,7 +19,7 @@ struct CommandView: View {
             ForEach(storage.commandGroup?.items ?? []) { commandItem in
                 FriendlyButton(commandItem.id + "CommandGroupButton") {
                     commandItem.onTap()
-                } lable: {
+                } label: {
                     VStack {
                         commandItem.image
                             .font(.largeTitle)

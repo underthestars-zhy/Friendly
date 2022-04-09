@@ -18,9 +18,9 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
 
     public let eternalId: String
 
-    public init(_ id: String, action: @escaping (() -> Void), lable: @escaping (() -> Content)) {
+    public init(_ id: String, action: @escaping (() -> Void), label: @escaping (() -> Content)) {
         self.action = action
-        self.content = lable()
+        self.content = label()
         self.eternalId = id
     }
 
