@@ -7,6 +7,7 @@ public struct Friendly<Content: View>: View {
     @StateObject var cursorState: CursorState
     @StateObject var eyeTraceStorage = EyeTraceStorage.shared
     @StateObject var friendlyManager = FriendlyManager.shared
+    @StateObject var sheetManager = SheetManager.shared
 
     let content: Content
 
@@ -25,6 +26,15 @@ public struct Friendly<Content: View>: View {
                 }
 
             content
+
+            VStack {
+                if let view = sheetManager.view {
+                    SheetView(sheetManager.name) {
+                        view
+                    }
+                    .transition(.scale)
+                }
+            }
 
             if eyeTraceStorage.showCommand {
                 FriendlyScope(eternalId: "Show Command") {

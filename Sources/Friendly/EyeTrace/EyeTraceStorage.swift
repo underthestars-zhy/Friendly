@@ -19,6 +19,8 @@ class EyeTraceStorage: ObservableObject {
 
     @Published var showCommand = false
 
+    var lastStopTime = Date()
+
     func check() {
         guard let processCheckState = processCheckState else {
             return
@@ -37,6 +39,7 @@ class EyeTraceStorage: ObservableObject {
 
             inProcress = false
             canSet = false
+            lastStopTime = Date()
         }
     }
 
@@ -46,14 +49,16 @@ class EyeTraceStorage: ObservableObject {
             partialResult += state == item ? 1 : 0
         }
 
-        return (vaild / all) > 0.6
+        return (vaild / all) > 0.8
     }
 
     func startProcess(_ state: EyeTraceManager.State) {
         guard canSet else { return }
-        inProcress = true
-        processCheckState = state
-        process = []
-        processStartTime = Date()
+        if Date() - (1 / 2).seconds > lastStopTime  {
+            inProcress = true
+            processCheckState = state
+            process = []
+            processStartTime = Date()
+        }
     }
 }

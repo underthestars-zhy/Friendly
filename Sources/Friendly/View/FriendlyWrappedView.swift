@@ -20,10 +20,26 @@ public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
     }
 
     public var body: some View {
+        _FriendlyWrappedView(eternalId) {
+            content
+                .getPosition($position)
+                .onChange(of: position) { newValue in
+                    positionManager.updatePosition(eternalId, position: .init(cgRect: position))
+                }
+        }
+    }
+}
+
+struct _FriendlyWrappedView<Content>: View, BeFriend where Content: View {
+    let eternalId: String
+    let content: Content
+
+    public init(_ id: String, @ViewBuilder content: () -> Content) {
+        eternalId = id
+        self.content = content()
+    }
+
+    public var body: some View {
         content
-            .getPosition($position)
-            .onChange(of: position) { newValue in
-                positionManager.updatePosition(eternalId, position: .init(cgRect: position))
-            }
     }
 }
