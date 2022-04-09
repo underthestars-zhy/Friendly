@@ -14,18 +14,166 @@ struct NumberPadView: View {
 
     var body: some View {
         VStack {
+            Spacer()
+
             HStack {
                 ForEach(0..<max, id: \.self) { id in
                     VStack {
                         Text(getText(id))
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(width: 10, height: 2)
+                        RoundedRectangle(cornerRadius: 2)
+                            .frame(width: 20, height: 2)
                     }
                     .padding()
                 }
             }
+            .padding()
+
+            HStack {
+                FriendlyButton("NumberPadView - 1") {
+                    add("1")
+                } label: {
+                    Text("1")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 2") {
+                    add("2")
+                } label: {
+                    Text("2")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 3") {
+                    add("3")
+                } label: {
+                    Text("3")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+            }
+
+            HStack {
+                FriendlyButton("NumberPadView - 4") {
+                    add("4")
+                } label: {
+                    Text("4")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 5") {
+                    add("5")
+                } label: {
+                    Text("5")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 6") {
+                    add("6")
+                } label: {
+                    Text("6")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+            }
+
+            HStack {
+                FriendlyButton("NumberPadView - 7") {
+                    add("7")
+                } label: {
+                    Text("7")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 8") {
+                    add("8")
+                } label: {
+                    Text("8")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 9") {
+                    add("9")
+                } label: {
+                    Text("9")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+            }
+
+            HStack {
+                Text(" ")
+                    .bold()
+                    .font(.title3)
+                    .padding()
+                    .padding(.horizontal)
+
+                FriendlyButton("NumberPadView - 0") {
+                    add("0")
+                } label: {
+                    Text("0")
+                        .bold()
+                        .font(.title3)
+                }
+                .hideExclusion(true)
+                .padding()
+                .padding(.horizontal)
+
+                Text(" ")
+                    .bold()
+                    .font(.title3)
+                    .overlay {
+                        FriendlyButton("NumberPadView - delete") {
+                            delete()
+                        } label: {
+                            Image(systemName: "delete.left.fill")
+                                .font(.title3.bold())
+                                .foregroundColor(.red)
+                        }
+                        .hideExclusion(true)
+                    }
+                    .padding()
+                    .padding(.horizontal)
+            }
 
             Spacer()
+        }
+        .onChange(of: texts) {
+            if $0.count == 4 {
+
+            }
         }
         .frame(width: 350, height: 400)
     }
@@ -34,7 +182,19 @@ struct NumberPadView: View {
         if texts.count > id {
             return texts[id]
         } else {
-            return ""
+            return " "
+        }
+    }
+
+    func add(_ text: String) {
+        if texts.count < max {
+            texts.append(text)
+        }
+    }
+
+    func delete() {
+        if texts.last != nil {
+            texts.removeLast()
         }
     }
 }

@@ -34,10 +34,10 @@ struct FPosition {
         let x = Screen.main.width * center.x
         let y = Screen.main.height * center.y
 
-        let frameXStart = self.x - 5
-        let frameYStart = self.y - 5
-        let frameXEnd = self.x + self.width + 5
-        let frameYEnd = self.y + self.height + 5
+        let frameXStart = self.x - 2
+        let frameYStart = self.y - 2
+        let frameXEnd = self.x + self.width + 2
+        let frameYEnd = self.y + self.height + 2
 
         return x > frameXStart && x < frameXEnd && y > frameYStart && y < frameYEnd
     }

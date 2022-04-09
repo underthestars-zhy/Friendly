@@ -44,6 +44,9 @@ public struct Friendly<Content: View>: View {
                     SheetView(item.name) {
                         item.view
                     }
+                    .priority(Int.min + 2 + (sheetManager.view.firstIndex(where: {
+                        $0.name == item.name
+                    }) ?? 0))
                     .hideExclusion(!sheetManager.view.isEmpty)
                     .transition(.scale)
                 }

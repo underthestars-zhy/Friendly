@@ -38,7 +38,7 @@ class CursorState: ObservableObject {
                 }
 
                 if PositionManager.shared.hide.contains(eternalId) && !PositionManager.shared.hideExclusion.contains(eternalId) {
-                    break
+                    continue
                 }
 
                 if PositionManager.shared.priority[eternalId] ?? 0 < lastPriority {

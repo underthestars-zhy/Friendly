@@ -20,12 +20,9 @@ struct SheetView<Content>: View, BeFriend where Content: View {
     }
 
     var body: some View {
-        FriendlyWrappedView(eternalId) {
-            content
-                .background(colorScheme == .light ? Color(hexadecimal: "F2F2F6") : Color(hexadecimal: "1C1B1D"))
-                .cornerRadius(10)
-                .shadow(color: colorScheme == .light ? .black.opacity(0.3) : .clear, radius: 30, x: 0, y: 0)
-        }
+        content
+            .background(UITraitCollection.current.userInterfaceStyle == .light ? Color(hexadecimal: "F2F2F6") : Color(hexadecimal: "1C1B1D"))
+            .cornerRadius(10)
+            .shadow(color: colorScheme == .light ? .black.opacity(0.3) : .clear, radius: 30, x: 0, y: 0)
     }
 }
-
