@@ -20,7 +20,15 @@ public struct FriendlyDatePicker: View, BeFriend {
         HStack {
             FriendlyButton("FriendlyDataPicker-Year") {
                 FriendlySheet {
-                    NumberPadView(max: 4)
+                    NumberPadView(max: 4) { year in
+                        if let year = Int(year) {
+                            let calendar = Calendar.current
+                            var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                            dateComponents.year = year
+                            let date = calendar.date(from: dateComponents)
+                            self.date = date ?? self.date
+                        }
+                    }
                 }.present("FriendlyDataPicker-Year-Sheet")
             } label: {
                 Text(getDate("yyyy"))
@@ -29,7 +37,17 @@ public struct FriendlyDatePicker: View, BeFriend {
             Text("/")
 
             FriendlyButton("FriendlyDataPicker-Month") {
-
+                FriendlySheet {
+                    NumberPadView(max: 2) { month in
+                        if let month = Int(month), month > 0, month < 13 {
+                            let calendar = Calendar.current
+                            var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                            dateComponents.month = month
+                            let date = calendar.date(from: dateComponents)
+                            self.date = date ?? self.date
+                        }
+                    }
+                }.present("FriendlyDataPicker-Month-Sheet")
             } label: {
                 Text(getDate("MM"))
             }
@@ -37,7 +55,17 @@ public struct FriendlyDatePicker: View, BeFriend {
             Text("/")
 
             FriendlyButton("FriendlyDataPicker-Day") {
-
+                FriendlySheet {
+                    NumberPadView(max: 2) { day in
+                        if let day = Int(day), day > 0, day < 32 {
+                            let calendar = Calendar.current
+                            var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                            dateComponents.day = day
+                            let date = calendar.date(from: dateComponents)
+                            self.date = date ?? self.date
+                        }
+                    }
+                }.present("FriendlyDataPicker-Day-Sheet")
             } label: {
                 Text(getDate("dd"))
             }

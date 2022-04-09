@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NumberPadView: View {
     let max: Int
+    let onCommit: (String) -> ()
 
     @State var texts = [String]()
 
@@ -171,8 +172,9 @@ struct NumberPadView: View {
             Spacer()
         }
         .onChange(of: texts) {
-            if $0.count == 4 {
-
+            if $0.count == max {
+                onCommit(texts.reduce("", +))
+                SheetManager.shared.view.removeLast()
             }
         }
         .frame(width: 350, height: 400)
