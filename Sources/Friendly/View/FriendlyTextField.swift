@@ -30,12 +30,17 @@ public struct FriendlyTextField: View, BeFriend {
         }
         .onRight {
             focused.toggle()
-        }
-        .onChange(of: focused) { newValue in
-            if focused {
+
+            if !focused {
                 speechManager.startRecord()
                 speechManager.onRecord = eternalId
             } else {
+                speechManager.stopRecord()
+                speechManager.onRecord = ""
+            }
+        }
+        .onChange(of: focused) {
+            if !$0 {
                 speechManager.stopRecord()
                 speechManager.onRecord = ""
             }

@@ -19,7 +19,9 @@ public struct FriendlyDatePicker: View, BeFriend {
     public var body: some View {
         HStack {
             FriendlyButton("FriendlyDataPicker-Year") {
-                
+                FriendlySheet {
+                    NumberPadView(max: 4)
+                }.present("FriendlyDataPicker-Year-Sheet")
             } label: {
                 Text(getDate("yyyy"))
             }

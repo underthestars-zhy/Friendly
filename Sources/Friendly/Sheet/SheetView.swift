@@ -28,3 +28,4 @@ struct SheetView<Content>: View, BeFriend where Content: View {
         }
     }
 }
+

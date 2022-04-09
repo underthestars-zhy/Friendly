@@ -14,6 +14,10 @@ public struct FriendlyScope: View, BeFriend {
     public var body: some View {
         FriendlyWrappedView(eternalId) {
             Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    onRight()
+                }
         }
         .onRight {
             onRight()
