@@ -22,6 +22,8 @@ class PositionManager: ObservableObject {
 
     var hideExclusion = Set<String>()
 
+    var priority = [String : Int]()
+
     func updatePosition(_ id: String, position: FPosition) {
         positions[id] = position
     }

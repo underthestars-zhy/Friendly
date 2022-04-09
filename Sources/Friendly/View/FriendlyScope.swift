@@ -7,10 +7,19 @@
 
 import SwiftUI
 
-public struct FriendlyScope: View {
+public struct FriendlyScope: View, BeFriend {
+    let eternalId: String
     let onRight: () -> ()
 
     public var body: some View {
-        Color.clear
+        FriendlyWrappedView(eternalId) {
+            Color.clear
+        }
+        .onRight {
+            onRight()
+        }
+        .onDisappear {
+            FriendlyManager.shared.removeScope(eternalId)
+        }
     }
 }

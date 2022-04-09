@@ -31,6 +31,7 @@ struct CommandView: View {
                 }
                 .exclusion()
                 .hideExclusion(friendlyManager.showPopText)
+                .priority(1)
                 .padding()
             }
         }

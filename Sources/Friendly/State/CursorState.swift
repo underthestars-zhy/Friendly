@@ -24,6 +24,10 @@ class CursorState: ObservableObject {
 
         var has = false
 
+        var lastPriority = Int.min
+
+        self.state = .circle
+
         for group in positions {
             let position = group.value
             let eternalId = group.key
@@ -34,7 +38,11 @@ class CursorState: ObservableObject {
                 }
 
                 if PositionManager.shared.hide.contains(eternalId) && !PositionManager.shared.hideExclusion.contains(eternalId) {
-                    return
+                    break
+                }
+
+                if PositionManager.shared.priority[eternalId] ?? 0 < lastPriority {
+                    continue
                 }
 
                 if PositionManager.shared.buttons.contains(eternalId) {
@@ -44,12 +52,11 @@ class CursorState: ObservableObject {
                 PositionManager.shared.on = eternalId
                 has = true
 
-                break
+                lastPriority = PositionManager.shared.priority[eternalId] ?? 0
             }
         }
 
         if !has {
-            self.state = .circle
             PositionManager.shared.on = nil
         }
     }
