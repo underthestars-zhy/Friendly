@@ -12,13 +12,13 @@ public struct FriendlyDatePicker: View, BeFriend {
     @Binding var date: Date
 
     public init(_ id: String, date: Binding<Date>) {
-        self.eternalId = id
         self._date = date
+        self.eternalId = id
     }
 
     public var body: some View {
         HStack {
-            FriendlyButton("FriendlyDataPicker-Year") {
+            FriendlyButton("FriendlyDataPicker-Year-\(eternalId)") {
                 FriendlySheet {
                     NumberPadView(max: 4) { year in
                         if let year = Int(year) {
@@ -29,14 +29,14 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
-                }.present("FriendlyDataPicker-Year-Sheet")
+                }.present("FriendlyDataPicker-Year-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("yyyy"))
             }
 
             Text("/")
 
-            FriendlyButton("FriendlyDataPicker-Month") {
+            FriendlyButton("FriendlyDataPicker-Month-\(eternalId)") {
                 FriendlySheet {
                     NumberPadView(max: 2) { month in
                         if let month = Int(month), month > 0, month < 13 {
@@ -47,14 +47,14 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
-                }.present("FriendlyDataPicker-Month-Sheet")
+                }.present("FriendlyDataPicker-Month-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("MM"))
             }
 
             Text("/")
 
-            FriendlyButton("FriendlyDataPicker-Day") {
+            FriendlyButton("FriendlyDataPicker-Day-\(eternalId)") {
                 FriendlySheet {
                     NumberPadView(max: 2) { day in
                         if let day = Int(day), day > 0, day < 32 {
@@ -65,7 +65,7 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
-                }.present("FriendlyDataPicker-Day-Sheet")
+                }.present("FriendlyDataPicker-Day-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("dd"))
             }
