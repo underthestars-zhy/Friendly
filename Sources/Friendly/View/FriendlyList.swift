@@ -43,8 +43,10 @@ public struct FriendlyList<Content>: View, BeFriend where Content: View {
 
                     FriendlyButton("FriendlyList-Down-\(eternalId)") {
                         if let last = getLast() {
-                            if last < items - 1 {
-                                proxy.scrollTo(last - 1)
+                            if last <= items - 1 {
+                                proxy.scrollTo(last)
+                            } else {
+                                proxy.scrollTo(items - 1)
                             }
                         }
                     } label: {
