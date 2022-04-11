@@ -11,13 +11,13 @@ struct PositionModifier: View {
     @Binding var postion: CGRect
 
     var body: some View {
-        return GeometryReader { geometry -> Color in
-            DispatchQueue.main.async {
-                postion = geometry.frame(in: CoordinateSpace.global)
-    
-            }
-
-            return Color.clear
+        return GeometryReader { geometry in
+            Color.clear
+                .onAppear {
+                    DispatchQueue.main.async {
+                        postion = geometry.frame(in: CoordinateSpace.global)
+                    }
+                }
         }
     }
 }

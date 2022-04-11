@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View where Self: BeFriend {
+public extension View where Self: BeFriend {
     func hideExclusion(_ when: Bool) -> FriendlyWrappedView<Self.Body> {
         if when {
             PositionManager.shared.hideExclusion.insert(self.eternalId)

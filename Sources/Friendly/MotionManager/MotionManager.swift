@@ -22,6 +22,8 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
 
     var first = true
 
+    var last: State = .center
+
     @Published var center = UnitPoint.center
 
     var needWait = false
@@ -84,6 +86,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
                 try? await Task.sleep(seconds: 1 / 60)
                 if needWait {
                     try? await Task.sleep(seconds: 1.5)
+                    resetData()
                     needWait = false
                 }
                 await updateCenter()
@@ -92,8 +95,22 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     }
 
     @MainActor private func calculate() async {
-        let xOffest = await offsetCalculate(x, last: lastX, screen: Screen.main.width)
-        let yOffset = await offsetCalculate(y, last: lastY, screen: Screen.main.height)
+        var xOffest = await offsetCalculate(x, last: lastX, screen: Screen.main.width)
+        var yOffset = await offsetCalculate(y, last: lastY, screen: Screen.main.height)
+
+        let _last = last
+
+        last = checkState(xOffest: xOffest, yOffset: yOffset)
+
+        if _last == last {
+            switch last {
+            case .left, .right:
+                xOffest *= 1.1
+            case .down, .up:
+                yOffset *= 1.1
+            case .center: break
+            }
+        }
 
         if center.x + xOffest < 0 {
             center.x = 0
@@ -146,6 +163,10 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     }
 
     func reset() {
+        needWait = true
+    }
+
+    func resetData() {
         lastX = 0.0
         lastY = 0.0
 
@@ -155,7 +176,32 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         first = true
 
         center = UnitPoint.center
+        last = .center
+    }
 
-        needWait = true
+    enum State {
+        case center
+        case up
+        case down
+        case left
+        case right
+    }
+
+    func checkState(xOffest: Double, yOffset: Double) -> State {
+        if abs(yOffset) > abs(xOffest) {
+            if yOffset > 0 {
+                return .up
+            } else {
+                return .down
+            }
+        } else if abs(yOffset) < abs(xOffest) {
+            if xOffest > 0 {
+                return .right
+            } else {
+                return .left
+            }
+        } else {
+            return .center
+        }
     }
 }

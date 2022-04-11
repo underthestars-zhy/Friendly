@@ -33,9 +33,11 @@ public struct Friendly<Content: View>: View {
 
             if !sheetManager.view.isEmpty {
                 FriendlyScope(eternalId: "Sheet Dismiss") {
-                    sheetManager.view.removeLast()
+                    if !sheetManager.view.isEmpty {
+                        sheetManager.view.removeLast()
+                    }
                 }
-                .priority(-1)
+                .priority(Int.min + 2)
                 .hideExclusion(!sheetManager.view.isEmpty)
             }
 
@@ -44,7 +46,7 @@ public struct Friendly<Content: View>: View {
                     SheetView(item.name) {
                         item.view
                     }
-                    .priority(Int.min + 2 + (sheetManager.view.firstIndex(where: {
+                    .priority(Int.min + 3 + (sheetManager.view.firstIndex(where: {
                         $0.name == item.name
                     }) ?? 0))
                     .hideExclusion(!sheetManager.view.isEmpty)

@@ -15,4 +15,10 @@ public struct CommandItem: Identifiable {
     let name: String
     let image: Image
     let onTap: () -> ()
+
+    public init(name: String, image: Image, onTap: @escaping () -> ()) {
+        self.name = name
+        self.image = image
+        self.onTap = onTap
+    }
 }
