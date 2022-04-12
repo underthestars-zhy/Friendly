@@ -15,6 +15,10 @@ public struct FriendlySheet<Content> where Content: View {
     }
 
     public func present(_ name: String) {
-        SheetManager.shared.view.append(.init(view: AnyView(content), name: name))
+        if !SheetManager.shared.view.contains(where: { item in
+            item.name == name
+        }) {
+            SheetManager.shared.view.append(.init(view: AnyView(content), name: name))
+        }
     }
 }

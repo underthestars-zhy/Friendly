@@ -9,11 +9,15 @@ import SwiftUI
 
 public struct FriendlyDatePicker: View, BeFriend {
     public let eternalId: String
+    let ex: Bool
+    @Binding var hideEx: Bool
     @Binding var date: Date
 
-    public init(_ id: String, date: Binding<Date>) {
+    public init(_ id: String, date: Binding<Date>, ex: Bool = false, hideEx: Binding<Bool>) {
         self._date = date
         self.eternalId = id
+        self.ex = ex
+        self._hideEx = hideEx
     }
 
     public var body: some View {
@@ -21,7 +25,7 @@ public struct FriendlyDatePicker: View, BeFriend {
             FriendlyButton("FriendlyDataPicker-Year-\(eternalId)") {
                 FriendlySheet {
                     NumberPadView(max: 4) { year in
-                        if let year = Int(year) {
+                        if let year = Int(year), year > 1970 {
                             let calendar = Calendar.current
                             var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
                             dateComponents.year = year
@@ -29,10 +33,17 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
+                    .onAppear {
+                        hideEx = false
+                    }
+                    .onDisappear {
+                        hideEx = true
+                    }
                 }.present("FriendlyDataPicker-Year-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("yyyy"))
             }
+            .hideExclusion(ex)
 
             Text("/")
 
@@ -47,10 +58,17 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
+                    .onAppear {
+                        hideEx = false
+                    }
+                    .onDisappear {
+                        hideEx = true
+                    }
                 }.present("FriendlyDataPicker-Month-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("MM"))
             }
+            .hideExclusion(ex)
 
             Text("/")
 
@@ -65,10 +83,67 @@ public struct FriendlyDatePicker: View, BeFriend {
                             self.date = date ?? self.date
                         }
                     }
+                    .onAppear {
+                        hideEx = false
+                    }
+                    .onDisappear {
+                        hideEx = true
+                    }
                 }.present("FriendlyDataPicker-Day-Sheet-\(eternalId)")
             } label: {
                 Text(getDate("dd"))
             }
+            .hideExclusion(ex)
+
+            Text("-----")
+
+            FriendlyButton("FriendlyDataPicker-Hour-\(eternalId)") {
+                FriendlySheet {
+                    NumberPadView(max: 2) { hour in
+                        if let hour = Int(hour), hour > 0, hour < 25 {
+                            let calendar = Calendar.current
+                            var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                            dateComponents.hour = hour
+                            let date = calendar.date(from: dateComponents)
+                            self.date = date ?? self.date
+                        }
+                    }
+                    .onAppear {
+                        hideEx = false
+                    }
+                    .onDisappear {
+                        hideEx = true
+                    }
+                }.present("FriendlyDataPicker-Hour-Sheet-\(eternalId)")
+            } label: {
+                Text(getDate("HH"))
+            }
+            .hideExclusion(ex)
+
+            Text("/")
+
+            FriendlyButton("FriendlyDataPicker-Min-\(eternalId)") {
+                FriendlySheet {
+                    NumberPadView(max: 2) { minute in
+                        if let minute = Int(minute), minute > 0, minute < 61 {
+                            let calendar = Calendar.current
+                            var dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                            dateComponents.minute = minute
+                            let date = calendar.date(from: dateComponents)
+                            self.date = date ?? self.date
+                        }
+                    }
+                    .onAppear {
+                        hideEx = false
+                    }
+                    .onDisappear {
+                        hideEx = true
+                    }
+                }.present("FriendlyDataPicker-Min-Sheet-\(eternalId)")
+            } label: {
+                Text(getDate("mm"))
+            }
+            .hideExclusion(ex)
         }
     }
 

@@ -36,9 +36,9 @@ struct NumberPadView: View {
                     Text("1")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 2") {
@@ -47,9 +47,9 @@ struct NumberPadView: View {
                     Text("2")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 3") {
@@ -58,9 +58,9 @@ struct NumberPadView: View {
                     Text("3")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
             }
 
@@ -71,9 +71,9 @@ struct NumberPadView: View {
                     Text("4")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 5") {
@@ -82,9 +82,9 @@ struct NumberPadView: View {
                     Text("5")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 6") {
@@ -93,9 +93,9 @@ struct NumberPadView: View {
                     Text("6")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
             }
 
@@ -106,9 +106,9 @@ struct NumberPadView: View {
                     Text("7")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 8") {
@@ -117,9 +117,9 @@ struct NumberPadView: View {
                     Text("8")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 9") {
@@ -128,9 +128,9 @@ struct NumberPadView: View {
                     Text("9")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
             }
 
@@ -138,7 +138,7 @@ struct NumberPadView: View {
                 Text(" ")
                     .bold()
                     .font(.title3)
-                    .padding()
+                    .padding(5)
                     .padding(.horizontal)
 
                 FriendlyButton("NumberPadView - 0") {
@@ -147,9 +147,9 @@ struct NumberPadView: View {
                     Text("0")
                         .bold()
                         .font(.title3)
+                        .padding(5)
                 }
                 .hideExclusion(true)
-                .padding()
                 .padding(.horizontal)
 
                 Text(" ")
@@ -162,10 +162,11 @@ struct NumberPadView: View {
                             Image(systemName: "delete.left.fill")
                                 .font(.title3.bold())
                                 .foregroundColor(.red)
+                                .padding(5)
                         }
                         .hideExclusion(true)
                     }
-                    .padding()
+                    .padding(5)
                     .padding(.horizontal)
             }
 
