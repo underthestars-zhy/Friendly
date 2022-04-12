@@ -41,7 +41,7 @@ public struct Friendly<Content: View>: View {
                 .hideExclusion(!sheetManager.view.isEmpty)
             }
 
-            VStack {
+            ZStack {
                 ForEach(sheetManager.view) { item in
                     SheetView(item.name) {
                         item.view

@@ -10,17 +10,20 @@ import SwiftUI
 public struct FriendlyTextField: View, BeFriend {
     public let eternalId: String
     let title: String
-    @Binding var text: String?
+    @Binding var text: String
 
     @FocusState var focused: Bool
 
-    @StateObject var speechManager = SpeechManager.shared
-    @StateObject var positionManager = PositionManager.shared
+    @StateObject var positionManager: PositionManager
 
-    public init(_ id: String, _ title: String, text: Binding<String?>) {
+    @State var shouldSpeech = false
+
+    public init(_ id: String, _ title: String, text: Binding<String>, focused: FocusState<Bool>) {
         self.eternalId = id
         self.title = title
         self._text = text
+        self._focused = focused
+        _positionManager = StateObject(wrappedValue: PositionManager.shared)
     }
 
     public var body: some View {
@@ -29,30 +32,26 @@ public struct FriendlyTextField: View, BeFriend {
                 .focused($focused)
         }
         .onRight {
+            MotionManager.shared.stop()
+
             focused.toggle()
 
+            DispatchQueue.main.async {
+                MotionManager.shared.start()
+            }
+
             if !focused {
-                speechManager.startRecord()
-                speechManager.onRecord = eternalId
+                SpeechManager.shared.startRecord()
+                SpeechManager.shared.onRecord = "EventDetail-title-tf"
             } else {
-                speechManager.stopRecord()
-                speechManager.onRecord = ""
+                SpeechManager.shared.stopRecord()
+                SpeechManager.shared.onRecord = ""
             }
         }
         .onChange(of: focused) {
             if !$0 {
-                speechManager.stopRecord()
-                speechManager.onRecord = ""
-            }
-        }
-        .onChange(of: speechManager.text) { _ in
-            if speechManager.onRecord == eternalId {
-                text = speechManager.lastText + speechManager.text
-            }
-        }
-        .onChange(of: speechManager.lastText) { _ in
-            if speechManager.onRecord == eternalId {
-                text = speechManager.lastText + speechManager.text
+                SpeechManager.shared.stopRecord()
+                SpeechManager.shared.onRecord = ""
             }
         }
         .onChange(of: positionManager.focus) { newValue in

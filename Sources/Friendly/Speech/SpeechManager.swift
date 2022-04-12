@@ -8,8 +8,8 @@
 import SwiftUI
 import Speech
 
-class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
-    static let shared = SpeechManager()
+public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
+    public static let shared = SpeechManager()
 
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en_US"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -18,11 +18,12 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
 
     private var isConfig = false
 
-    @Published var text: String = ""
-    var needToAppend = false
-    @Published var lastText = ""
+    public var text: String = ""
+    public var lastText = ""
 
-    @Published var onRecord = ""
+    @Published public var onRecord = ""
+
+    @Published public var mainText = ""
 
     func config() {
         speechRecognizer?.delegate = self
@@ -39,7 +40,7 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
         }
     }
 
-    func startRecord() {
+    public func startRecord() {
         if !isConfig {
             config()
         }
@@ -51,6 +52,8 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
         self.text = ""
         self.lastText = ""
 
+        print("1")
+
         do {
             recognitionTask?.cancel()
             self.recognitionTask = nil
@@ -61,6 +64,7 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
             let inputNode = audioEngine.inputNode
 
             recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+
             guard let recognitionRequest = recognitionRequest else { return }
 
             recognitionRequest.shouldReportPartialResults = true
@@ -81,7 +85,12 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
                     }
 
                     self.text = result.bestTranscription.formattedString
+
+                    self.mainText = self.lastText + self.text
+
+                    print(self.mainText)
                 }
+
 
                 if error != nil || isFinal {
                     self.audioEngine.stop()
@@ -105,15 +114,11 @@ class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
         }
     }
 
-    func stopRecord() {
+    public func stopRecord() {
         self.audioEngine.stop()
         self.recognitionRequest?.endAudio()
         self.recognitionTask?.cancel()
         self.recognitionTask = nil
-    }
-
-    @objc func silence() {
-        needToAppend = true
     }
 }
 

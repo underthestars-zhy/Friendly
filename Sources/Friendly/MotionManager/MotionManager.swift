@@ -39,19 +39,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
             }
         }
 
-        motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
-            guard let self = self, let motion = motion else { return }
-            if self.first {
-                self.first = false
-                return
-            }
-
-            self.lastX = self.x
-            self.lastY = self.y
-
-            self.x = motion.attitude.roll
-            self.y = motion.attitude.pitch
-        }
+        start()
 
         startMonitor()
     }
@@ -76,6 +64,31 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         }
     }
 
+    func stop() {
+        motionManager.stopDeviceMotionUpdates()
+    }
+
+    func start() {
+        motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
+            guard let self = self, let motion = motion else { return }
+
+            if self.needWait {
+                return
+            }
+
+            if self.first {
+                self.first = false
+                return
+            }
+
+            self.lastX = self.x
+            self.lastY = self.y
+
+            self.x = motion.attitude.roll
+            self.y = motion.attitude.pitch
+        }
+    }
+
     deinit {
         motionManager.stopDeviceMotionUpdates()
     }
@@ -85,7 +98,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
             while true {
                 try? await Task.sleep(seconds: 1 / 60)
                 if needWait {
-                    try? await Task.sleep(seconds: 1.5)
+                    try? await Task.sleep(seconds: 2)
                     resetData()
                     needWait = false
                 }
@@ -94,7 +107,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         }
     }
 
-    @MainActor private func calculate() async {
+    private func calculate() async {
         var xOffest = await offsetCalculate(x, last: lastX, screen: Screen.main.width)
         var yOffset = await offsetCalculate(y, last: lastY, screen: Screen.main.height)
 
@@ -144,7 +157,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         case .circle:
             offset *= 700
         case .react:
-            offset *= 100
+            offset *= 350
         }
 
         offset = offset / screen
@@ -154,7 +167,7 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         return offset
     }
 
-    @MainActor private func updateCenter() async {
+    private func updateCenter() async {
         await calculate()
     }
 
@@ -167,12 +180,6 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
     }
 
     func resetData() {
-        lastX = 0.0
-        lastY = 0.0
-
-        x = 0.0
-        y = 0.0
-
         first = true
 
         center = UnitPoint.center

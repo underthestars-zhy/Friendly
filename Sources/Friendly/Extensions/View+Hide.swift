@@ -9,12 +9,10 @@ import SwiftUI
 
 extension View where Self: BeFriend {
     func hide(_ when: Bool) -> _FriendlyWrappedView<Self.Body> {
-        DispatchQueue.main.async {
-            if when {
-                PositionManager.shared.hide.insert(self.eternalId)
-            } else {
-                PositionManager.shared.hide.remove(self.eternalId)
-            }
+        if when {
+            PositionManager.shared.hide.insert(self.eternalId)
+        } else {
+            PositionManager.shared.hide.remove(self.eternalId)
         }
 
         return _FriendlyWrappedView(eternalId) {

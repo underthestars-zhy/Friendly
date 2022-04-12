@@ -18,7 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(path: "../SwiftUIX"),
-        .package(path: "../SwiftDate")
+        .package(path: "../SwiftDate"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -27,7 +27,7 @@ let package = Package(
             name: "Friendly",
             dependencies: [
                 .product(name: "SwiftUIX", package: "SwiftUIX"),
-                .product(name: "SwiftDate", package: "SwiftDate")
+                .product(name: "SwiftDate", package: "SwiftDate"),
             ]),
         .testTarget(
             name: "FriendlyTests",
