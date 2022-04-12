@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-class PositionManager: ObservableObject {
-    static let shared = PositionManager()
+public class PositionManager: ObservableObject {
+    public static let shared = PositionManager()
 
     @Published var focus: String?
 
@@ -18,7 +18,7 @@ class PositionManager: ObservableObject {
     var allIgnore = false
     var exclusion = Set<String>()
 
-    var buttons = Set<String>()
+    public var buttons = Set<String>()
 
     var hide = Set<String>()
 

@@ -15,17 +15,19 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
     
     let action: (() -> Void)
     let content: Content
+    let ignore: Bool
 
     public let eternalId: String
 
-    public init(_ id: String, action: @escaping (() -> Void), label: @escaping (() -> Content)) {
+    public init(_ id: String, ignore: Bool = false, action: @escaping (() -> Void), label: @escaping (() -> Content)) {
         self.action = action
         self.content = label()
         self.eternalId = id
+        self.ignore = ignore
     }
 
     public var body: some View {
-        FriendlyWrappedView(eternalId) {
+        FriendlyWrappedView(eternalId, ignore: ignore) {
             Button {
                 action()
             } label: {
@@ -37,8 +39,15 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
                 action()
             }
         }
+        .contentShape(Rectangle())
         .onAppear {
             positionManager.buttons.insert(eternalId)
+        }
+        .task {
+            if ignore {
+                try? await Task.sleep(nanoseconds: NSEC_PER_MSEC)
+                positionManager.buttons.insert(eternalId)
+            }
         }
     }
 }

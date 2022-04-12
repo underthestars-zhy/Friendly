@@ -9,7 +9,7 @@ import SwiftUI
 import CoreMotion
 import SwiftUIX
 
-class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegate {
+public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegate {
     public static let shared = MotionManager()
 
     private var motionManager = CMHeadphoneMotionManager()
@@ -64,11 +64,11 @@ class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManagerDelegat
         }
     }
 
-    func stop() {
+    public func stop() {
         motionManager.stopDeviceMotionUpdates()
     }
 
-    func start() {
+    public func start() {
         motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
             guard let self = self, let motion = motion else { return }
 

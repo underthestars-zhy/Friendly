@@ -42,7 +42,7 @@ public struct FriendlyTextField: View, BeFriend {
 
             if !focused {
                 SpeechManager.shared.startRecord()
-                SpeechManager.shared.onRecord = "EventDetail-title-tf"
+                SpeechManager.shared.onRecord = eternalId
             } else {
                 SpeechManager.shared.stopRecord()
                 SpeechManager.shared.onRecord = ""
