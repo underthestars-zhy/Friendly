@@ -48,15 +48,14 @@ struct _FriendlyWrappedView<Content>: View, BeFriend where Content: View {
             .onChange(of: position) { newValue in
                 positionManager.updatePosition(eternalId, position: .init(cgRect: position))
             }
-            .task {
-                if ignore {
-                    try? await Task.sleep(nanoseconds: NSEC_PER_MSEC)
-                    positionManager.updatePosition(eternalId, position: .init(cgRect: position))
-                }
-            }
+//            .task {
+//                if ignore {
+//                    try? await Task.sleep(nanoseconds: NSEC_PER_MSEC)
+//                    positionManager.updatePosition(eternalId, position: .init(cgRect: position))
+//                }
+//            }
             .onDisappear {
                 FriendlyManager.shared.removeScope(eternalId)
-
             }
     }
 }

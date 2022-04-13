@@ -37,4 +37,15 @@ public class PositionManager: ObservableObject {
     func exclusionCheck(_ id: String) -> Bool {
         exclusion.contains(id)
     }
+
+    public func reset() {
+        positions = [:]
+        on = nil
+        allIgnore = false
+        exclusion = []
+        buttons = []
+        hide = []
+        hideExclusion = []
+        priority = [:]
+    }
 }

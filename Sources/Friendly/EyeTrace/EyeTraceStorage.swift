@@ -17,7 +17,7 @@ class EyeTraceStorage: ObservableObject {
     var processStartTime = Date()
     var canSet = true
 
-    @Published var showCommand = false
+    @Published var showCommand = falseI
 
     var lastStopTime = Date()
 
