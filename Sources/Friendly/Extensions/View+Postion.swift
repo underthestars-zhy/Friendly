@@ -15,11 +15,15 @@ struct PositionModifier: View {
         return GeometryReader { geometry in
             Color.clear
                 .onAppear {
-                    postion = geometry.frame(in: CoordinateSpace.global)
+                    DispatchQueue.main.async {
+                        postion = geometry.frame(in: CoordinateSpace.global)
+                    }
                 }
                 .onChange(of: geometry.frame(in: CoordinateSpace.global)) { _ in
                     if appear {
-                        postion = geometry.frame(in: CoordinateSpace.global)
+                        DispatchQueue.main.async {
+                            postion = geometry.frame(in: CoordinateSpace.global)
+                        }
                     }
                 }
                 .onDisappear {
