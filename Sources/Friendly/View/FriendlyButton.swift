@@ -36,6 +36,7 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
         }
         .onRight {
             if positionManager.on == eternalId {
+                TapMusic.playSounds()
                 action()
             }
         }

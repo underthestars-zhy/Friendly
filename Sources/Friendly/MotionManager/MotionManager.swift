@@ -34,9 +34,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         motionManager.delegate = self
 
         if !motionManager.isDeviceMotionAvailable {
-            Task {
-                await DeviceState.shared.notSupport()
-            }
+            DeviceState.shared.notSupport()
         }
 
         start()
@@ -47,9 +45,9 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     public func headphoneMotionManagerDidConnect(_ manager: CMHeadphoneMotionManager) {
         Task {
             if motionManager.isDeviceMotionAvailable {
-                await DeviceState.shared.connect()
+                DeviceState.shared.connect()
             } else {
-                await DeviceState.shared.notSupport()
+                DeviceState.shared.notSupport()
             }
         }
     }
@@ -57,9 +55,9 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     public func headphoneMotionManagerDidDisconnect(_ manager: CMHeadphoneMotionManager) {
         Task {
             if motionManager.isDeviceMotionAvailable {
-                await DeviceState.shared.disconnect()
+                DeviceState.shared.disconnect()
             } else {
-                await DeviceState.shared.notSupport()
+                DeviceState.shared.notSupport()
             }
         }
     }
@@ -98,11 +96,18 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
             while true {
                 try? await Task.sleep(seconds: 1 / 60)
                 if needWait {
+                    needWait = false
+                    first = true
                     try? await Task.sleep(seconds: 2)
                     resetData()
-                    needWait = false
                 }
                 await updateCenter()
+
+                do {
+                    try Task.checkCancellation()
+                } catch {
+                    return
+                }
             }
         }
     }
@@ -145,7 +150,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     }
 
     func offsetCalculate(_ current: Double, last: Double, screen: Double) async -> Double {
-        var offset: Double = await DeviceState.shared.state == .connect ? current - last : 0
+        var offset: Double = DeviceState.shared.state == .connect ? current - last : 0
 
         offset = -offset
 
@@ -180,8 +185,6 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     }
 
     func resetData() {
-        first = true
-
         center = UnitPoint.center
         last = .center
     }

@@ -20,10 +20,8 @@ struct PositionModifier: View {
                     }
                 }
                 .onChange(of: geometry.frame(in: CoordinateSpace.global)) { _ in
-                    if appear {
-                        DispatchQueue.main.async {
-                            postion = geometry.frame(in: CoordinateSpace.global)
-                        }
+                    if appear && !FriendlyManager.shared.stop && DeviceState.shared.state == .connect {
+                        postion = geometry.frame(in: CoordinateSpace.global)
                     }
                 }
                 .onDisappear {

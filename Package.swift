@@ -28,7 +28,8 @@ let package = Package(
             dependencies: [
                 .product(name: "SwiftUIX", package: "SwiftUIX"),
                 .product(name: "SwiftDate", package: "SwiftDate"),
-            ]),
+            ],
+            resources: [.copy("Resources")]),
         .testTarget(
             name: "FriendlyTests",
             dependencies: ["Friendly"]),

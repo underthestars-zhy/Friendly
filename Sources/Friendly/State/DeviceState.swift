@@ -7,18 +7,17 @@
 
 import Foundation
 
-@MainActor
-class DeviceState: ObservableObject, Sendable {
-    enum State {
+public class DeviceState: ObservableObject {
+    public enum State {
         case connect
         case disconnect
         case ignore
         case notSupport
     }
 
-    static let shared = DeviceState()
+    public static let shared = DeviceState()
 
-    @Published var state: State = .disconnect
+    @Published public var state: State = .disconnect
 
     func disconnect() {
         self.state = .disconnect
@@ -27,22 +26,28 @@ class DeviceState: ObservableObject, Sendable {
 #endif
     }
 
-    func connect() async {
-        self.state = .connect
+    func connect() {
+        if !(self.state == .notSupport) {
+            self.state = .connect
+        }
 #if DEBUG
         print("connect")
 #endif
     }
 
     func ignore() {
-        self.state = .ignore
+        if !(self.state == .notSupport) {
+            self.state = .ignore
+        }
 #if DEBUG
         print("ignore")
 #endif
     }
 
     func notSupport() {
-        self.state = .notSupport
+        if !(self.state == .notSupport) {
+            self.state = .notSupport
+        }
 #if DEBUG
         print("Not support")
 #endif

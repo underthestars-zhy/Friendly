@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class FriendlyManager: ObservableObject {
-    static let shared = FriendlyManager()
+final public class FriendlyManager: ObservableObject {
+    public static let shared = FriendlyManager()
 
     func removeScope(_ id: String) {
         PositionManager.shared.removePosition(id)
@@ -17,4 +17,6 @@ final class FriendlyManager: ObservableObject {
             PositionManager.shared.on = nil
         }
     }
+
+    @Published public var stop = false
 }

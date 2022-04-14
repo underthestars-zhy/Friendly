@@ -52,7 +52,7 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
         self.text = ""
         self.lastText = ""
 
-        print("1")
+        print("do")
 
         do {
             recognitionTask?.cancel()
@@ -71,6 +71,7 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
             recognitionRequest.requiresOnDeviceRecognition = true
 
             recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
+                print("do")
                 var isFinal = false
 
                 if let result = result {
@@ -125,8 +126,7 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
 extension SpeechManager {
     public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
         if !available {
-            // TODO: Not support
-            print("not support")
+            DeviceState.shared.notSupport()
         }
     }
 }

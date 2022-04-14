@@ -29,23 +29,30 @@ public struct FriendlyTextField: View, BeFriend {
     public var body: some View {
         FriendlyWrappedView(eternalId) {
             TextField(title, text: $text)
+                .ignoresSafeArea(.keyboard)
                 .focused($focused)
         }
         .onRight {
             MotionManager.shared.stop()
+            FriendlyManager.shared.stop = true
 
-            focused.toggle()
+            Task(priority: .userInitiated) {
+                focused.toggle()
 
-            DispatchQueue.main.async {
+                try? await Task.sleep(seconds: 1 / 2)
+
                 MotionManager.shared.start()
+                FriendlyManager.shared.stop = false
             }
 
-            if !focused {
-                SpeechManager.shared.startRecord()
-                SpeechManager.shared.onRecord = eternalId
-            } else {
-                SpeechManager.shared.stopRecord()
-                SpeechManager.shared.onRecord = ""
+            DispatchQueue.main.async {
+                if !focused {
+                    SpeechManager.shared.startRecord()
+                    SpeechManager.shared.onRecord = eternalId
+                } else {
+                    SpeechManager.shared.stopRecord()
+                    SpeechManager.shared.onRecord = ""
+                }
             }
         }
         .onChange(of: focused) {

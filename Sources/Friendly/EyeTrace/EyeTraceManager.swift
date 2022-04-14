@@ -47,6 +47,7 @@ public class EyeTraceManager: NSObject, ARSCNViewDelegate, ObservableObject {
 extension EyeTraceManager {
     public func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         guard let anchor = anchor as? ARFaceAnchor else { return }
+        guard DeviceState.shared.state == .connect else { return }
         let right = anchor.blendShapes[.eyeBlinkLeft]!.doubleValue < 0.1
         let left = anchor.blendShapes[.eyeBlinkRight]!.doubleValue < 0.1
 

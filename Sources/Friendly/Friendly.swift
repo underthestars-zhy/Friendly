@@ -50,7 +50,7 @@ public struct Friendly<Content: View>: View {
                         $0.name == item.name
                     }) ?? 0))
                     .hideExclusion(!sheetManager.view.isEmpty)
-                    .transition(.scale)
+//                    .transition(.opacity.animation(.easeInOut))
                 }
             }
 
@@ -64,7 +64,7 @@ public struct Friendly<Content: View>: View {
                 CommandView()
             }
 
-            if devicesState.state == .connect {
+            if devicesState.state == .connect && !friendlyManager.stop {
                 switch cursorState.state {
                 case .circle:
                     CursorView()
