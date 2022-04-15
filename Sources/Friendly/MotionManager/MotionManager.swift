@@ -163,6 +163,8 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
             offset *= 700
         case .react:
             offset *= 350
+        case .textfield:
+            offset *= 100
         }
 
         offset = offset / screen

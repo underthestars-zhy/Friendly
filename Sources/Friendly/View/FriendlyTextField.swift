@@ -35,6 +35,7 @@ public struct FriendlyTextField: View, BeFriend {
         }
         .onRight {
             shouldSpeech.toggle()
+            print(shouldSpeech)
         }
         .onChange(of: focused) { _ in
             SpeechManager.shared.stopRecord()
@@ -44,6 +45,12 @@ public struct FriendlyTextField: View, BeFriend {
             if newValue != eternalId {
                 focused = false
             }
+        }
+        .onAppear {
+            PositionManager.shared.textfileds.insert(eternalId)
+        }
+        .onDisappear {
+            PositionManager.shared.textfileds.remove(eternalId)
         }
     }
 }

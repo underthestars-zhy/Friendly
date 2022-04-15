@@ -15,6 +15,7 @@ class CursorState: ObservableObject {
     enum State {
         case circle
         case react(cgRect: FRect)
+        case textfield(cgRect: FRect)
     }
 
     var t: Task<Void, Never>?
@@ -47,6 +48,10 @@ class CursorState: ObservableObject {
 
                 if PositionManager.shared.buttons.contains(eternalId) {
                     self.state = .react(cgRect: position.makeCursorRect())
+                }
+
+                if PositionManager.shared.textfileds.contains(eternalId) {
+                    self.state = .textfield(cgRect: position.makeTextFiledsRect())
                 }
 
                 PositionManager.shared.on = eternalId

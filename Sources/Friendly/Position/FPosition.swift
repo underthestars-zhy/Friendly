@@ -51,4 +51,14 @@ struct FPosition {
 
         return .init(x: x, y: y, width: width, height: height)
     }
+
+    func makeTextFiledsRect() -> FRect {
+        let x = self.x - 2
+        let y = self.y + height / 2
+
+        let width = 5.0
+        let height = height + 5
+
+        return .init(x: x, y: y, width: width, height: height)
+    }
 }

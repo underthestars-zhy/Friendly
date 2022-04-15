@@ -20,6 +20,8 @@ public class PositionManager: ObservableObject {
 
     public var buttons = Set<String>()
 
+    var textfileds = Set<String>()
+
     var hide = Set<String>()
 
     var hideExclusion = Set<String>()

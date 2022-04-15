@@ -70,7 +70,7 @@ public struct Friendly<Content: View>: View {
                     CursorView()
                         .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
 
-                case .react(cgRect: let rect):
+                case .react(cgRect: let rect), .textfield(cgRect: let rect):
                     RectCursorView(rect: rect)
                 }
             }
