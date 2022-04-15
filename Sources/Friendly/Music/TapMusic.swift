@@ -12,15 +12,10 @@ class TapMusic {
     static var audioPlayer: AVPlayer?
 
     static func playSounds() {
-        guard let url = Bundle.module.url(forResource: "tap.mp3", withExtension: nil) else {
-            return }
+        guard let url = Bundle.module.url(forResource: "tap.mp3", withExtension: nil) else { return }
         let item = AVPlayerItem(url: url)
         audioPlayer = AVPlayer(playerItem: item)
         audioPlayer?.isMuted = false
-        if audioPlayer?.rate == 0 {
-            audioPlayer?.play()
-        } else {
-            audioPlayer?.pause()
-        }
+        audioPlayer?.play()
     }
 }

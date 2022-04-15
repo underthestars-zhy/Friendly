@@ -26,7 +26,8 @@ class EyeTraceStorage: ObservableObject {
             return
         }
 
-        if Date() - 1.seconds > processStartTime  {
+
+        if Date() - (processCheckState == .both ? 500_000_000.nanoseconds : 1.seconds) > processStartTime  {
             if percent(processCheckState) {
                 switch processCheckState {
                 case .none: break

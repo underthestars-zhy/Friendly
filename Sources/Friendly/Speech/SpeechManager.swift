@@ -52,7 +52,7 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
         self.text = ""
         self.lastText = ""
 
-        print("do")
+        print("do1")
 
         do {
             recognitionTask?.cancel()
@@ -72,11 +72,8 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
 
             recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
                 print("do")
-                var isFinal = false
 
                 if let result = result {
-                    isFinal = result.isFinal
-
                     for segments in result.bestTranscription.segments {
                         if segments.duration > 0.1 {
                             self.lastText += (self.text + " ")
@@ -90,15 +87,6 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
                     self.mainText = self.lastText + self.text
 
                     print(self.mainText)
-                }
-
-
-                if error != nil || isFinal {
-                    self.audioEngine.stop()
-                    inputNode.removeTap(onBus: 0)
-
-                    self.recognitionRequest = nil
-                    self.recognitionTask = nil
                 }
             }
 
