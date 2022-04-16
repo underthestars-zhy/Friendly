@@ -9,7 +9,10 @@ import SwiftUI
 
 struct RectCursorView: View {
     @Environment(\.colorScheme) var colorScheme
+    @StateObject var motionManager = MotionManager.shared
     let rect: FRect
+
+    @State var breath = false
 
     var body: some View {
         Group {
@@ -29,5 +32,18 @@ struct RectCursorView: View {
         .cornerRadius(6)
         .position(x: rect.x, y: rect.y)
         .opacity(0.5)
+        .opacity(breath ? 0 : 1)
+        .onChange(of: motionManager.stopUI) { value in
+            print(value)
+            if value {
+                print("do")
+                withAnimation(.spring().repeatForever()) {
+                    breath.toggle()
+                }
+            } else {
+                print("do2")
+                breath = false
+            }
+        }
     }
 }

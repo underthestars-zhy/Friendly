@@ -7,11 +7,12 @@
 
 import SwiftUI
 import Speech
+import AVFAudio
 
 public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelegate {
     public static let shared = SpeechManager()
 
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en_US"))
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en-US"))
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private let audioEngine = AVAudioEngine()
@@ -24,6 +25,11 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
     @Published public var onRecord = ""
 
     @Published public var mainText = ""
+
+    public override init() {
+        super.init()
+        config()
+    }
 
     func config() {
         speechRecognizer?.delegate = self
@@ -41,10 +47,6 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
     }
 
     public func startRecord() {
-        if !isConfig {
-            config()
-        }
-
         if audioEngine.isRunning {
             stopRecord()
         }
@@ -52,14 +54,12 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
         self.text = ""
         self.lastText = ""
 
-        print("do1")
-
         do {
             recognitionTask?.cancel()
             self.recognitionTask = nil
 
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.defaultToSpeaker, .allowAirPlay, .allowBluetoothA2DP, .allowBluetooth])
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             let inputNode = audioEngine.inputNode
 
@@ -71,8 +71,6 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
             recognitionRequest.requiresOnDeviceRecognition = true
 
             recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest) { result, error in
-                print("do")
-
                 if let result = result {
                     for segments in result.bestTranscription.segments {
                         if segments.duration > 0.1 {

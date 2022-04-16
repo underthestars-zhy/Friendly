@@ -35,15 +35,29 @@ public struct FriendlyTextField: View, BeFriend {
         }
         .onRight {
             shouldSpeech.toggle()
-            print(shouldSpeech)
+            MotionManager.shared.stopUI = shouldSpeech
+            print(MotionManager.shared.stopUI)
+
+            if shouldSpeech {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    SpeechManager.shared.onRecord = eternalId
+                    SpeechManager.shared.startRecord()
+                }
+            }
         }
         .onChange(of: focused) { _ in
-            SpeechManager.shared.stopRecord()
-            SpeechManager.shared.onRecord = ""
+            DispatchQueue.main.async {
+                SpeechManager.shared.stopRecord()
+                SpeechManager.shared.onRecord = ""
+                MotionManager.shared.stopUI = false
+            }
         }
         .onChange(of: positionManager.focus) { newValue in
             if newValue != eternalId {
-                focused = false
+                DispatchQueue.main.async {
+                    SpeechManager.shared.stopRecord()
+                    SpeechManager.shared.onRecord = ""
+                }
             }
         }
         .onAppear {

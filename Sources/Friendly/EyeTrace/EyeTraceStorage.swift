@@ -50,7 +50,7 @@ class EyeTraceStorage: ObservableObject {
             partialResult += state == item ? 1 : 0
         }
 
-        return (vaild / all) > (item == EyeTraceManager.State.both ? 0.6 : 0.8)
+        return (vaild / all) > 0.8
     }
 
     func startProcess(_ state: EyeTraceManager.State) {

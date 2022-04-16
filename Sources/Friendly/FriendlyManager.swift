@@ -19,4 +19,5 @@ final public class FriendlyManager: ObservableObject {
     }
 
     @Published public var stop = false
+    @Published public var setCursor = false
 }

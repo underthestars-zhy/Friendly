@@ -50,11 +50,10 @@ public struct Friendly<Content: View>: View {
                         $0.name == item.name
                     }) ?? 0))
                     .hideExclusion(!sheetManager.view.isEmpty)
-//                    .transition(.opacity.animation(.easeInOut))
                 }
             }
 
-            if eyeTraceStorage.showCommand {
+            if eyeTraceStorage.showCommand || friendlyManager.setCursor {
                 FriendlyScope(eternalId: "Show Command") {
                     eyeTraceStorage.showCommand = false
                 }
@@ -63,6 +62,11 @@ public struct Friendly<Content: View>: View {
 
                 CommandView()
             }
+
+            if friendlyManager.setCursor {
+
+            }
+
 
             if devicesState.state == .connect && !friendlyManager.stop {
                 switch cursorState.state {

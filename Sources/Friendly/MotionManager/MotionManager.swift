@@ -24,10 +24,13 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
     var last: State = .center
 
+    var hasValue = false
+
     @Published var center = UnitPoint.center
 
     var needWait = false
 
+    @Published var stopUI = false
     override init() {
         super.init()
 
@@ -62,18 +65,10 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         }
     }
 
-    public func stop() {
-        motionManager.stopDeviceMotionUpdates()
-    }
-
     public func start() {
         motionManager.startDeviceMotionUpdates(to: OperationQueue()) { [weak self] motion, error in
             guard let self = self, let motion = motion else { return }
-
-            if self.needWait {
-                return
-            }
-
+            self.hasValue = true
             if self.first {
                 self.first = false
                 return
@@ -94,14 +89,19 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     private func startMonitor() {
         Task(priority: .high) {
             while true {
-                try? await Task.sleep(seconds: 1 / 60)
                 if needWait {
                     needWait = false
                     first = true
-                    try? await Task.sleep(seconds: 2)
+                    try? await Task.sleep(seconds: 1)
                     resetData()
                 }
-                await updateCenter()
+
+                try? await Task.sleep(seconds: 1 / 120)
+
+                if hasValue {
+                    await updateCenter()
+                    hasValue = false
+                }
 
                 do {
                     try Task.checkCancellation()
@@ -112,20 +112,22 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         }
     }
 
-    private func calculate() async {
-        var xOffest = await offsetCalculate(x, last: lastX, screen: Screen.main.width)
-        var yOffset = await offsetCalculate(y, last: lastY, screen: Screen.main.height)
+    private func calculate() {
+        var xOffest = offsetCalculate(x, last: lastX, screen: Screen.main.width)
+        var yOffset = offsetCalculate(y, last: lastY, screen: Screen.main.height)
 
         let _last = last
 
         last = checkState(xOffest: xOffest, yOffset: yOffset)
 
+//        print(!lastXOffset.repeated(xOffest) && !lastYOffset.repeated(yOffset))
+
         if _last == last {
             switch last {
             case .left, .right:
-                xOffest *= 1.1
+                xOffest *= 2
             case .down, .up:
-                yOffset *= 1.1
+                yOffset *= 1.4
             case .center: break
             }
         }
@@ -149,7 +151,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         CursorState.shared.check()
     }
 
-    func offsetCalculate(_ current: Double, last: Double, screen: Double) async -> Double {
+    func offsetCalculate(_ current: Double, last: Double, screen: Double) -> Double {
         var offset: Double = DeviceState.shared.state == .connect ? current - last : 0
 
         offset = -offset
@@ -160,11 +162,11 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
         switch CursorState.shared.state {
         case .circle:
-            offset *= 700
+            offset *= 1000
         case .react:
             offset *= 350
         case .textfield:
-            offset *= 100
+            offset *= 300
         }
 
         offset = offset / screen
@@ -175,7 +177,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     }
 
     private func updateCenter() async {
-        await calculate()
+        calculate()
     }
 
     func resetCenter() {
@@ -189,6 +191,8 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     func resetData() {
         center = UnitPoint.center
         last = .center
+//        lastXOffset = .init()
+//        lastYOffset = .init()
     }
 
     enum State {
