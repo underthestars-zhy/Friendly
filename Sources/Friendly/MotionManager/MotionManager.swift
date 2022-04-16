@@ -31,6 +31,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     var needWait = false
 
     @Published var stopUI = false
+    
     override init() {
         super.init()
 
@@ -96,11 +97,10 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
                     resetData()
                 }
 
-                try? await Task.sleep(seconds: 1 / 120)
+                try? await Task.sleep(seconds: 1 / 60)
 
-                if hasValue {
+                if !stopUI {
                     await updateCenter()
-                    hasValue = false
                 }
 
                 do {
@@ -120,14 +120,12 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
         last = checkState(xOffest: xOffest, yOffset: yOffset)
 
-//        print(!lastXOffset.repeated(xOffest) && !lastYOffset.repeated(yOffset))
-
         if _last == last {
             switch last {
             case .left, .right:
-                xOffest *= 2
+                xOffest *= 1.4
             case .down, .up:
-                yOffset *= 1.4
+                yOffset *= 1.3
             case .center: break
             }
         }
@@ -162,7 +160,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
         switch CursorState.shared.state {
         case .circle:
-            offset *= 1000
+            offset *= 700
         case .react:
             offset *= 350
         case .textfield:

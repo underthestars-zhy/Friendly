@@ -47,6 +47,8 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
     }
 
     public func startRecord() {
+        print("do")
+
         if audioEngine.isRunning {
             stopRecord()
         }
@@ -88,9 +90,9 @@ public class SpeechManager: NSObject, ObservableObject, SFSpeechRecognizerDelega
                 }
             }
 
-            let recordingFormat = inputNode.outputFormat(forBus: 0)
-            inputNode.removeTap(onBus: 0)
-            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+            let recordingFormat = inputNode.outputFormat(forBus: 1)
+            inputNode.removeTap(onBus: 1)
+            inputNode.installTap(onBus: 1, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
                 self.recognitionRequest?.append(buffer)
             }
 
