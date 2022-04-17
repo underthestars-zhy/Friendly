@@ -12,7 +12,7 @@ public struct CommandGroup {
 
     public init(@CommandItemBuilder _ items: () -> [CommandItem]) {
         let defaultItem = CommandItem(name: "Reset Cursor", image: Image(systemName: "dot.circle.and.cursorarrow")) {
-            MotionManager.shared.resetCenter()
+            FriendlyManager.shared.setCursor = true
             EyeTraceStorage.shared.showCommand = false
         }
 

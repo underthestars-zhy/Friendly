@@ -90,14 +90,14 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     private func startMonitor() {
         Task(priority: .high) {
             while true {
+                try? await Task.sleep(seconds: 1 / 60)
+
                 if needWait {
                     needWait = false
                     first = true
                     try? await Task.sleep(seconds: 1)
                     resetData()
                 }
-
-                try? await Task.sleep(seconds: 1 / 60)
 
                 if !stopUI {
                     await updateCenter()
@@ -189,8 +189,6 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     func resetData() {
         center = UnitPoint.center
         last = .center
-//        lastXOffset = .init()
-//        lastYOffset = .init()
     }
 
     enum State {

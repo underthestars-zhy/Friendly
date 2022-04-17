@@ -64,7 +64,27 @@ public struct Friendly<Content: View>: View {
             }
 
             if friendlyManager.setCursor {
-
+                _FriendlyWrappedView("Set Cursor") {
+                    Color.systemBackground
+                        .onAppear {
+                            PositionManager.shared.exclusion = []
+                            PositionManager.shared.on = "Set Cursor"
+                            CursorState.shared.state = .circle
+                            PositionManager.shared.allIgnore = true
+                            MotionManager.shared.stopUI = true
+                            MotionManager.shared.resetCenter()
+                        }
+                        .onDisappear {
+                            PositionManager.shared.allIgnore = false
+                        }
+                }
+                .exclusion()
+                .onRight {
+                    PositionManager.shared.on = nil
+                    MotionManager.shared.stopUI = false
+                    friendlyManager.setCursor = false
+                    motionManager.reset()
+                }
             }
 
 

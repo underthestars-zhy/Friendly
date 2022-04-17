@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
     @StateObject var sheetManager = SheetManager.shared
+    @StateObject var friendlyManager = FriendlyManager.shared
     
     public let eternalId: String
     let content: Content
@@ -25,6 +26,7 @@ public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
             content
         }
         .hide(!sheetManager.view.isEmpty)
+        .hide(friendlyManager.setCursor)
     }
 }
 
