@@ -13,6 +13,7 @@ final public class FriendlyManager: ObservableObject {
     func removeScope(_ id: String) {
         PositionManager.shared.removePosition(id)
         PositionManager.shared.buttons.remove(id)
+        PositionManager.shared.textfileds.remove(id)
         if PositionManager.shared.on == id {
             PositionManager.shared.on = nil
         }

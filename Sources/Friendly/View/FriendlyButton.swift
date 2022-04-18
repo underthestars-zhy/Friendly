@@ -43,11 +43,5 @@ public struct FriendlyButton<Content: View>: View, BeFriend {
         .onAppear {
             positionManager.buttons.insert(eternalId)
         }
-//        .task {
-//            if ignore {
-//                try? await Task.sleep(nanoseconds: NSEC_PER_MSEC)
-//                positionManager.buttons.insert(eternalId)
-//            }
-//        }
     }
 }

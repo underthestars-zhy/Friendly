@@ -66,6 +66,13 @@ public struct Friendly<Content: View>: View {
             if friendlyManager.setCursor {
                 _FriendlyWrappedView("Set Cursor") {
                     Color.systemBackground
+                        .overlay {
+                            Text("Align the center of your head with the cursor, then blink your left eye.")
+                                .padding(.bottom)
+                                .padding(.bottom)
+                                .padding(.bottom)
+                                .font(.title3.bold())
+                        }
                         .onAppear {
                             PositionManager.shared.exclusion = []
                             PositionManager.shared.on = "Set Cursor"
@@ -93,7 +100,6 @@ public struct Friendly<Content: View>: View {
                 case .circle:
                     CursorView()
                         .position(x: motionManager.center.x * Screen.main.width, y: motionManager.center.y * Screen.main.height)
-
                 case .react(cgRect: let rect), .textfield(cgRect: let rect):
                     RectCursorView(rect: rect)
                 }

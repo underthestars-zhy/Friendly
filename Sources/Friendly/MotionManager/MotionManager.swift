@@ -23,6 +23,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     var first = true
 
     var last: State = .center
+    var last2: State = .center
 
     var hasValue = false
 
@@ -117,15 +118,21 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
         var yOffset = offsetCalculate(y, last: lastY, screen: Screen.main.height)
 
         let _last = last
+        let _last2 = last2
 
+        last2 = last
         last = checkState(xOffest: xOffest, yOffset: yOffset)
 
         if _last == last {
             switch last {
             case .left, .right:
-                xOffest *= 1.4
+                if _last2 == .left || _last2 == .right {
+                    xOffest *= 1.5
+                } else {
+                    xOffest *= 1.2
+                }
             case .down, .up:
-                yOffset *= 1.3
+                yOffset *= 1.1
             case .center: break
             }
         }
@@ -189,6 +196,7 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
     func resetData() {
         center = UnitPoint.center
         last = .center
+        last2 = .center
     }
 
     enum State {

@@ -25,8 +25,7 @@ public struct FriendlyWrappedView<Content>: View, BeFriend where Content: View {
         _FriendlyWrappedView(eternalId, ignore: ignore) {
             content
         }
-        .hide(!sheetManager.view.isEmpty)
-        .hide(friendlyManager.setCursor)
+        .hide(!sheetManager.view.isEmpty || friendlyManager.setCursor)
     }
 }
 
@@ -50,12 +49,6 @@ struct _FriendlyWrappedView<Content>: View, BeFriend where Content: View {
             .onChange(of: position) { newValue in
                 positionManager.updatePosition(eternalId, position: .init(cgRect: position))
             }
-//            .task {
-//                if ignore {
-//                    try? await Task.sleep(nanoseconds: NSEC_PER_MSEC)
-//                    positionManager.updatePosition(eternalId, position: .init(cgRect: position))
-//                }
-//            }
             .onDisappear {
                 FriendlyManager.shared.removeScope(eternalId)
             }
