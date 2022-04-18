@@ -12,6 +12,7 @@ public extension View where Self: BeFriend {
         if when {
             PositionManager.shared.hideExclusion.insert(self.eternalId)
         } else {
+            print(eternalId)
             PositionManager.shared.hideExclusion.remove(self.eternalId)
         }
 

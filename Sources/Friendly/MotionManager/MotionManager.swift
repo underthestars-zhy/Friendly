@@ -127,12 +127,12 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
             switch last {
             case .left, .right:
                 if _last2 == .left || _last2 == .right {
-                    xOffest *= 1.5
+                    xOffest *= Double(FriendlyManager.shared.h2Acceleration) / 100
                 } else {
-                    xOffest *= 1.2
+                    xOffest *= Double(FriendlyManager.shared.hAcceleration) / 100
                 }
             case .down, .up:
-                yOffset *= 1.1
+                yOffset *= Double(FriendlyManager.shared.lAcceleration) / 100
             case .center: break
             }
         }
@@ -167,11 +167,11 @@ public class MotionManager: NSObject, ObservableObject, CMHeadphoneMotionManager
 
         switch CursorState.shared.state {
         case .circle:
-            offset *= 700
+            offset *= Double(FriendlyManager.shared.baseSpeed)
         case .react:
-            offset *= 350
+            offset *= Double(FriendlyManager.shared.buttonSpeed)
         case .textfield:
-            offset *= 300
+            offset *= Double(FriendlyManager.shared.tfSpeed)
         }
 
         offset = offset / screen
