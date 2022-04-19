@@ -50,6 +50,7 @@ public struct Friendly<Content: View>: View {
                         $0.name == item.name
                     }) ?? 0))
                     .hideExclusion(!sheetManager.view.isEmpty)
+                    .onRight { }
                 }
             }
 

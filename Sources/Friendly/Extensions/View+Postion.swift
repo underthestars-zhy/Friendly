@@ -21,7 +21,9 @@ struct PositionModifier: View {
                 }
                 .onChange(of: geometry.frame(in: CoordinateSpace.global)) { _ in
                     if appear && !FriendlyManager.shared.stop && DeviceState.shared.state == .connect {
-                        postion = geometry.frame(in: CoordinateSpace.global)
+                        DispatchQueue.main.async {
+                            postion = geometry.frame(in: CoordinateSpace.global)
+                        }
                     }
                 }
                 .onDisappear {

@@ -10,6 +10,7 @@ import SwiftUIX
 
 public struct FriendlyPreferenceView: View {
     @StateObject var friendlyManager: FriendlyManager
+    @StateObject var sheetManager = SheetManager.shared
 
     public init() {
         _friendlyManager = StateObject(wrappedValue: FriendlyManager.shared)
@@ -24,7 +25,9 @@ public struct FriendlyPreferenceView: View {
                     SheetManager.shared.view.removeLast()
                 }
             }
-            .priority(-1)
+            .priority(Int.min + 4 + (sheetManager.view.firstIndex(where: {
+                $0.name == "FriendlyPreferenceView Sheet Dismiss"
+            }) ?? 0))
             .hideExclusion(!hideEx)
 
             VStack {

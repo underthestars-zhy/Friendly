@@ -35,7 +35,7 @@ final public class FriendlyManager: ObservableObject {
 
     @Published var baseSpeed = 700
     @Published var hAcceleration = 120
-    @Published var h2Acceleration = 150
+    @Published var h2Acceleration = 135
     @Published var lAcceleration = 110
     @Published var buttonSpeed = 350
     @Published var tfSpeed = 300
