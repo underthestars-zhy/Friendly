@@ -14,6 +14,7 @@ public struct CommandGroup {
         let defaultItem = CommandItem(name: "Reset Cursor", image: Image(systemName: "dot.circle.and.cursorarrow")) {
             FriendlyManager.shared.setCursor = true
             EyeTraceStorage.shared.showCommand = false
+            print("do")
         }
 
         self.items = [defaultItem] + items()

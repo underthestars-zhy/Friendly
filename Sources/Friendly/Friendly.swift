@@ -60,7 +60,6 @@ public struct Friendly<Content: View>: View {
                 }
                 .exclusion()
                 .hideExclusion(!sheetManager.view.isEmpty)
-
                 CommandView()
             }
 
@@ -79,8 +78,10 @@ public struct Friendly<Content: View>: View {
                             PositionManager.shared.on = "Set Cursor"
                             CursorState.shared.state = .circle
                             PositionManager.shared.allIgnore = true
-                            MotionManager.shared.stopUI = true
-                            MotionManager.shared.resetCenter()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                MotionManager.shared.stopUI = true
+                                MotionManager.shared.resetCenter()
+                            }
                         }
                         .onDisappear {
                             PositionManager.shared.allIgnore = false
