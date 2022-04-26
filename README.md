@@ -2,7 +2,8 @@
 
 ## Watch
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/JIhzsjET-Bk0.jpg)](http://www.youtube.com/watch?v=JIhzsjET-Bk "Friendly")
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/JIhzsjET-Bk/0.jpg)](http://www.youtube.com/watch?v=JIhzsjET-Bk "Friendly")
 
 ## How To Use
 
