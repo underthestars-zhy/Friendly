@@ -236,3 +236,17 @@ func hideExclusion(_ when: Bool) -> FriendlyWrappedView<Self.Body>
 ### other
 
 There are some other solution, but still WIP.
+
+## Design Guide
+
+### 1
+
+![guide - 1](./Github/Design - 1)
+
+### 2
+
+![guide - 2](./Github/Design - 2)
+
+### 3
+
+![guide - 3](./Github/Design - 3)
