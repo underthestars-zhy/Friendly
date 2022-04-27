@@ -241,12 +241,12 @@ There are some other solutions, but still WIP.
 
 ### 1
 
-![Guide - 1](Github/Design - 1.png)
+![](Github/Design-1.png)
 
 ### 2
 
-![Guide - 2](Github/Design - 2.png)
+![](Github/Design-2.png)
 
 ### 3
 
-![Guide - 3](Github/Design - 3.png)
+![](Github/Design-3.png)
