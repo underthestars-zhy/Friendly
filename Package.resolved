@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftDate",
+        "repositoryURL": "https://github.com/malcommac/SwiftDate",
+        "state": {
+          "branch": null,
+          "revision": "6190d0cefff3013e77ed567e6b074f324e5c5bf5",
+          "version": "6.3.1"
+        }
+      },
+      {
+        "package": "SwiftUIX",
+        "repositoryURL": "https://github.com/SwiftUIX/SwiftUIX",
+        "state": {
+          "branch": null,
+          "revision": "889c781539cdd1e6a1111472c711082522aa35c6",
+          "version": "0.1.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
